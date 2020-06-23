@@ -1,7 +1,10 @@
 package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
+import com.wbillingsley.veautiful.templates.VSlides
+import willtap.imperativeTopic.ImpossibleThings
 
+import scala.collection.mutable
 import scala.scalajs.js
 
 /**
@@ -72,6 +75,35 @@ object Common {
   def cloneGitHubStr(project:String, user:String="UNEcosc250"):String = {
     s"`git clone https://github.com/$user/$project.git`"
   }
+
+  val willCcBy:String =
+    """
+      |<p>Written by Will Billingsley</p>
+      |
+      |<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/">
+      |  <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/au/88x31.png" /></a><br />
+      |  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>.
+      |""".stripMargin
+
+  /*
+   * Slide decks
+   */
+
+  val decks:Map[String, VSlides] = Map(
+    "impossibleThings" -> ImpossibleThings.deck
+  )
+
+  def showDeck(s:String):VHtmlNode = {
+    <.div(
+      <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
+        <.div(^.cls := "container",
+          <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
+        )
+      ),
+      <.div(decks(s))
+    )
+  }
+
 
 
 }

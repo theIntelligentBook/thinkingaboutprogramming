@@ -23,6 +23,7 @@ object Intro {
           | programming environment, robot mazes, and various other things to try to help you along.
           |""".stripMargin
       ),
+      <.a(^.href := DeckRoute("impossibleThings").path, "impossible")
     ),
     Seq(
 
