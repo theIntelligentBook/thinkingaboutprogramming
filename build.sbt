@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.scala-js" %%% "scalajs-dom" % "1.0.0",
   "com.github.wbillingsley.veautiful" %%% "veautiful" % "master-SNAPSHOT",
   "com.github.wbillingsley.veautiful" %%% "veautiful-templates" % "master-SNAPSHOT",
-	"com.github.wbillingsley.veautiful" %%% "scatter" % "master-SNAPSHOT"
+	"com.github.wbillingsley.veautiful" %%% "scatter" % "master-SNAPSHOT",
+  "com.github.wbillingsley" % "lavamaze" % "master-SNAPSHOT" // Need to single-% as it's a top-level jitpack project
 )
 
 val deployScript = taskKey[Unit]("Copies the fullOptJS script to deployscripts/")

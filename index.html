@@ -23,6 +23,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+<script>
+    // As we're not hosting the Lava Maze images, we need to tell the Lava Maze library where to get them from
+    lavaSettings = {
+        imageBase: "https://www.wbillingsley.com/lavamaze/"
+    }
+</script>
+
+
 <!-- Location when site generated locally -->
 <script type="text/javascript" src="./target/scala-2.13/thinking-about-programming-opt.js"></script>
 <!-- Location deployed to by CI -->

@@ -2,7 +2,7 @@ package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.VSlides
-import willtap.imperativeTopic.ImpossibleThings
+import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings}
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -90,7 +90,8 @@ object Common {
    */
 
   val decks:Map[String, VSlides] = Map(
-    "impossibleThings" -> ImpossibleThings.deck
+    "impossibleThings" -> ImpossibleThings.deck,
+    "commandsAndFunctions" -> CommandsAndFunctions.deck
   )
 
   def showDeck(s:String):VHtmlNode = {
