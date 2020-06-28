@@ -20,6 +20,9 @@
     </div>
 
     <script>
+        // ace.js editor needs this to make text selections work in Chrome (otherwise it can't calculate scale correctly)
+        document.documentElement.style.zoom = 1
+
         // As we're not hosting the Lava Maze images, we need to tell the Lava Maze library where to get them from
         lavaSettings = {
             imageBase: "https://www.wbillingsley.com/lavamaze/"
@@ -28,6 +31,11 @@
 
     <!-- Include Scala.js compiled code -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/ace.js"></script>
+
+    <!-- Asyncify, for turning student synchronous code Async -->
+    <script src="https://www.wbillingsley.com/asyncify/dist/main.js"></script>
+
     <script type="text/javascript" src="./target/scala-2.13/thinking-about-programming-fastopt.js"></script>
 
 

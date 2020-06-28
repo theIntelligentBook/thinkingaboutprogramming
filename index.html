@@ -24,6 +24,9 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
+    // ace.js editor needs this to make text selections work in Chrome (otherwise it can't calculate scale correctly)
+    document.documentElement.style.zoom = 1
+
     // As we're not hosting the Lava Maze images, we need to tell the Lava Maze library where to get them from
     lavaSettings = {
         imageBase: "https://www.wbillingsley.com/lavamaze/"

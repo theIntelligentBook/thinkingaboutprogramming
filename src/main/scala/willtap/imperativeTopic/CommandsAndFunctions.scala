@@ -1,5 +1,6 @@
 package willtap.imperativeTopic
 
+import coderunner.JSCodable
 import com.wbillingsley.veautiful.{DiffNode, MutableArrayComponent}
 import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder, ScatterPlot}
@@ -63,19 +64,19 @@ object CommandsAndFunctions {
       <.h2("Welcome to the Lava Maze"),
       Challenge.split(
         <.p(
-          Maze()((1,1), (1,1)) { m => m.loadFromString("S") },
+          Maze()((1,1), (1,1)) { m => m.loadFromString("S"); m.start();  },
           Common.markdown("*Snobot*: our hero")
         ),
         <.p(
-          Maze()((1,1), (1,1)) { m => m.loadFromString(".S") },
+          Maze()((1,1), (1,1)) { m => m.loadFromString(".S"); m.start();  },
           Common.markdown("*Floor*: passable to snobots and blob guards")
         ),
         <.p(
-          Maze()((1,1), (1,1)) { m => m.loadFromString("#S") },
+          Maze()((1,1), (1,1)) { m => m.loadFromString("#S"); m.start();  },
           Common.markdown("*Wall*: impassable to snobots and blob guards")
         ),
         <.p(
-          Maze()((1,1), (1,1)) { m => m.loadFromString(" S") },
+          Maze()((1,1), (1,1)) { m => m.loadFromString(" S"); m.start();  },
           Common.markdown("*Lava*: deadly to snobots, passable to blob guards")
         ),
       )(
@@ -97,6 +98,136 @@ object CommandsAndFunctions {
         )
       )
     ))
+    .markdownSlide("""## Vocabulary and Syntax
+                     |
+                     |To write a program, we're going to need some vocabulary - things to say.
+                     |
+                     |* Some of these things are defined by the language: *reserved words*. e.g., `if`, `let`, and `while`
+                     |
+                     |* Some are defined by the *standard library*. e.g., `Math`
+                     |
+                     |* Some are defined by the environment we're running the program in. e.g., `console`
+                     |
+                     |* Some might be defined by other parts of our program. e.g., the Lava Maze game defines `right()`
+                     |  to be the command that makes Snobot go right one square.
+                     |
+                     |We're also going to need to use *syntax* - that is, we're going to have to compose our expressions in a very
+                     |precise way that the language interpreter can parse. If we make a mistake, and the interpreter can't
+                     |parse our code, we might have a *syntax error*.
+                     |""".stripMargin)
+    .veautifulSlide(<.div(
+      Common.markdown(
+        """## Calling our first function
+          |
+          |To get to the goal, we're going to need Snobot to go right twice...
+          |""".stripMargin
+      ),
+      JSCodable(Maze("1.goright")(5 -> 5, 5 -> 5) { m =>
+        m.loadFromString(
+          """
+            |
+            | S.G
+            |
+            |
+            |""".stripMargin)
+      })()
+    ))
+    .markdownSlide(
+      """## Calling our first function
+        |
+        |The program we should have ended up with is:
+        |
+        |```js
+        |right();
+        |right();
+        |```
+        |
+        |Things to note from this
+        |
+        |* To call a function in JavaScript, you put the name of the function, followed by any arguments it takes in
+        |parentheses. If it doesn't take any arguments, you end up with `right()`.
+        |
+        |* Statements in JavaScript end with a semi-colon. But if you miss it out, JavaScript will *try* to infer where
+        |you meant to put it.
+        |
+        |* The two statements are executed one after another. This is because JavaScript is an *imperative* language
+        |("imperative" means command). A lot of languages are like this, but there are some that aren't.
+        |""".stripMargin)
+    .veautifulSlide(<.div(
+      Common.markdown(
+        """## Making decisions
+          |
+          |Hit play and reset a few times. This maze changes randomly!
+          |""".stripMargin
+      ),
+      JSCodable(Maze("1.goright")(5 -> 5, 5 -> 5) { m =>
+        if (Math.random() < 0.5) {
+          m.loadFromString(
+            """
+              |
+              | S.G
+              |""".stripMargin)
+        } else {
+          m.loadFromString(
+            """
+              |
+              | S.
+              |  G
+              |""".stripMargin)
+        }
+      })()
+    ))
+    .markdownSlide(
+      s"""## Making decisions
+        |
+        |A simple solution might be
+        |
+        |```js
+        |right();
+        |if (canGoRight()) {
+        |  right();
+        |} else {
+        |  down();
+        |}
+        |```
+        |
+        |There's a few things going on here...
+        |
+        |* *Blocks* of code in JavaScript are surrounded by `{ }`. It's a *curly-brace* language.  \t
+        |  (Some others, e.g. Python, use indentation instead)
+        |
+        |* `canGoRight()` returns a *Boolean* result: `true` or `false`.
+        |
+        |* The syntax of an `if` statement. Don't forget to put the condition you're checking inside `()`.
+        |
+        |* It doesn't have to have an `else` clause, but it can.
+        |""".stripMargin)
+    .markdownSlide(
+      """## One to beware of...
+        |
+        |You might be tempted to write your `if` statements without curly-braces:
+        |
+        |```js
+        |if (canGoRight())
+        |  right()
+        |else
+        |  down()
+        |```
+        |
+        |...but beware, because this might not do what you expect:
+        |
+        |```js
+        |if (canGoRight())
+        |  right();
+        |else
+        |  println("Can't go right");
+        |  down();
+        |```
+        |
+        |Your eyes can easily parse the code differently than the interpreter does. Programmers often decide on
+        |*code conventions* (e.g. "always write `if`s with curly braces) to avoid this.
+        |
+        |""".stripMargin)
     .markdownSlide(
       """## Still being written...
         |
