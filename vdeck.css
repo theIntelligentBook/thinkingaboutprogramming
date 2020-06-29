@@ -98,7 +98,7 @@
 }
 
 .v-slide li {
-    line-height: 200%;
+    margin-bottom: 2rem;
 }
 
 .v-slide li pre {
