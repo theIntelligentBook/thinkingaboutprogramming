@@ -560,7 +560,7 @@ object CommandsAndFunctions {
             |  println("Now you are " + ageInFunc);
             |}
             |
-            |getOlder(myAge);
+            |getOlder(age);
             |println("But outside the function you are " + age);
             |```
             |
