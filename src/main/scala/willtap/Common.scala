@@ -1,8 +1,8 @@
 package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.VSlides
-import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings}
+import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
+import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, TurtleTutorial}
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -94,17 +94,32 @@ object Common {
     "commandsAndFunctions" -> CommandsAndFunctions.deck
   )
 
-  def showDeck(s:String):VHtmlNode = {
+  val challenges:Map[String, Challenge] = Map(
+    "turtleGraphics" -> TurtleTutorial.challenge
+  )
+
+  def showDeck(s:String, p:Int):VHtmlNode = {
+    println(s"Name is $s page is $p")
     <.div(
       <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
         <.div(^.cls := "container",
           <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
         )
       ),
-      <.div(decks(s))
+      <.div(decks(s).atSlide(p))
     )
   }
 
+  def showChallenge(name:String, level:Int, stage:Int):VHtmlNode = {
+    <.div(
+      <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
+        <.div(^.cls := "container",
+          <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
+        )
+      ),
+      <.div(challenges(name).show(level, stage))
+    )
+  }
 
 
 }

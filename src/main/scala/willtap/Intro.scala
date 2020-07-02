@@ -29,12 +29,14 @@ object Intro {
         s"""
            |## 1. Commands and Functions
            |
-           |* [Making Impossible Things](${DeckRoute("impossibleThings").path})  \t
+           |* [Making Impossible Things](${DeckRoute("impossibleThings", 0).path})  \t
            |  ...in which we start to motivate the idea of computational thinking
            |
-           |* [Commands and Functions](${DeckRoute("commandsAndFunctions").path})  \t
+           |* [Commands and Functions](${DeckRoute("commandsAndFunctions", 0).path})  \t
            |  ...in which we meet Snobot and learn a little JavaScript
            |
+           |* [Tutorial: Turtle Graphics](${ChallengeRoute("turtleGraphics", 0, 0).path})  \t
+           |  ...in which we meet a turtle and draw some shapes
            |
            |""".stripMargin
       )

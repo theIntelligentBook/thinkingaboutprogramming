@@ -13,16 +13,22 @@ sealed trait Route {
 }
 object Route {
   val introPath = /# / "home"
-  val deckPath = /# / "deck" / stringParam
+  val deckPath = /# / "deck" / stringParam / stringParam
+  val challengePath = /# / "challenge" / stringParam / stringParam / stringParam
 }
 
 case object IntroRoute extends Route {
   val path = Route.introPath.mkString(start)
   def render = Intro.frontPage.layout
 }
-case class DeckRoute(name:String) extends Route {
-  val path = Route.deckPath.mkString((name, start))
-  def render = Common.showDeck(name)
+case class DeckRoute(name:String, page:Int) extends Route {
+  val path = Route.deckPath.mkString((page.toString, (name, start)))
+  def render = Common.showDeck(name, page)
+}
+
+case class ChallengeRoute(name:String, level:Int, stage:Int) extends Route {
+  val path = Route.challengePath.mkString((stage.toString, (level.toString, (name, start))))
+  def render = Common.showChallenge(name, level, stage)
 }
 
 object Router extends HistoryRouter[Route] {
@@ -44,8 +50,24 @@ object Router extends HistoryRouter[Route] {
   }
   override def routeFromLocation(): Route = PathDSL.hashPathList() match {
     case Route.introPath(start) => IntroRoute
+    case Route.deckPath(((page, (name, _)), _))  => {
+      val p = try { page.toInt } catch { case _:Throwable => 0 }
+      DeckRoute(name, p)
+    }
     case Route.deckPath(((name, _), _))  => {
-      DeckRoute(name)
+      DeckRoute(name, 0)
+    }
+    case Route.challengePath(((stage, (level, (name, _))), _))  => {
+      val l = try { level.toInt } catch { case _:Throwable => 0 }
+      val s = try { stage.toInt } catch { case _:Throwable => 0 }
+      ChallengeRoute(name, l, s)
+    }
+    case Route.challengePath(((level, (name, _)), _))  => {
+      val p = try { level.toInt } catch { case _:Throwable => 0 }
+      ChallengeRoute(name, p, 0)
+    }
+    case Route.challengePath(((name, _), _))  => {
+      ChallengeRoute(name, 0, 0)
     }
     case x =>
       IntroRoute
