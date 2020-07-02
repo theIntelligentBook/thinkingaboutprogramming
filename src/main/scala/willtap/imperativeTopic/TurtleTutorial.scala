@@ -84,10 +84,10 @@ object TurtleTutorial {
           |First, I'd better give you a quick rundown of the *functions* you can call in the environment:
           |
           |* `left(a)` turns the turtle left (anticlockwise) by *a* degrees.  \t
-          |  `anticlockwise(a)` turns the turtle anticlockwise by *r* radians, if you prefer radians
+          |  `anticlockwise(r)` turns the turtle anticlockwise by *r* radians, if you prefer radians
           |
           |* `right(a)` turns the turtle right (clockwise) by *a* degrees.  \t
-          |  `clockwise(a)` turns the turtle clockwise by *r* radians, if you prefer radians
+          |  `clockwise(r)` turns the turtle clockwise by *r* radians, if you prefer radians
           |
           |* `forward(d)` asks the turtle to move forward *d* pixels.  \t
           |  `back(d)` asks the turtle to move backward *d* pixels.  \t
