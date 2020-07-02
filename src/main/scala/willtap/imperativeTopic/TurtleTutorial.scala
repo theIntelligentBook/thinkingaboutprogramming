@@ -429,8 +429,8 @@ object TurtleTutorial {
         )),
       ),
     )),
-    Level("Recursion", Seq(
-      VNodeStage.twoColumn("Functions that call themselves")(
+    Level("Calling yourself", Seq(
+      VNodeStage.twoColumn("Functions that call themselves - Recursion")(
         () => Common.markdown(
           """So far, we've written some functions that call other functions such as `left(90)` and `forward(100)`.
             |
@@ -438,8 +438,8 @@ object TurtleTutorial {
             |But can be hard to think about - it's notoriously one of the hardest topics for programmers to get their heads around.
             |So much so, in fact, that many experienced programmers find ways to avoid using recurson so their programs can be easier to think about.
             |
-            |Fortunately, in this subject, you *don't* need to write any recursive code. But in the hope that showing you
-            |it happening will help it feel more familiar if it comes up in later subjects, let's animate some for you and
+            |Fortunately, in this subject, you *don't* need to write any recursive code. But in the hope that *showing*
+            |it happening will help it feel more familiar if it comes up in later subjects, let's animate some recursions for you and
             |just get you to play them and see it happening. If nothing else, it's an excuse for me to write some code to draw pretty patterns!
             |
             |On the right, we've got a `square` function that draws a square.
@@ -521,60 +521,56 @@ object TurtleTutorial {
         )),
       ),
       VNodeStage.twoColumn("Sierpinski's triangle")(
-        () => Common.markdown(
+        () => <.div(
+          Common.markdown(
           """Recursion can let us draw some repeating patterns using a very short amount of code - though it's not
-            |always easy to understand what's going on unless you are well practiced.
+            |always easy to understand what's going on unless you are well practiced. Let's stick with just
+            |*seeing* it happen in this unit!
             |
-            |On the right hand side, what we've done is taken the code from the previous slide, that drew a triangle
-            |and then drew three smaller triangles.
+            |Let's take the code from the previous slide, that drew a triangle and then drew three smaller triangles.
             |
-            |But instead of drawing three smaller triangles, we've changed it to draw three smaller *sierpinskis*.
+            |But instead of drawing three smaller triangles, let's change it to draw three smaller *sierpinskis*.
             |
-            |It's now recursive, and will draw this recursive pattern of that is what you get if you keep subdividing
-            |a triangle into smaller and smaller triangles.
+            |This changes the function it from the version on the left, to the version on the right:
             |""".stripMargin),
-        () => VNodeStage.card(PrefabCodable(
-          """function triangle(d) {
-            |    for (let i = 0; i < 3; i++) {
-            |        forward(d)
-            |        left(120)
-            |    }
-            |}
-            |
-            |function sierpinski(d) {
-            |    triangle(d)
-            |    if (d > 20) {
-            |        sierpinski(d/2)
-            |        forward(d)
-            |        left(120)
-            |        sierpinski(d/2)
-            |        forward(d)
-            |        left(120)
-            |        sierpinski(d/2)
-            |        forward(d)
-            |        left(120)
-            |    }
-            |}
-            |
-            |setThickness(1)
-            |sierpinski(320)
-            |""".stripMargin,
-          smallCanvas("vanishing squares", 640 -> 320, start=Some(120 -> 300)), codeStyle=Some("max-height: 400px;")
-        )),
-      ),
-      VNodeStage.twoColumn("Sierpinski's triangle")(
-        () => Common.markdown(
-          """Recursion can let us draw some repeating patterns using a very short amount of code - though it's not
-            |always easy to understand what's going on unless you are well practiced.
-            |
-            |On the right hand side, what we've done is taken the code from the previous slide, that drew a triangle
-            |and then drew three smaller triangles.
-            |
-            |But instead of drawing three smaller triangles, we've changed it to draw three smaller *sierpinskis*.
-            |
-            |It's now recursive, and will draw this recursive pattern of that is what you get if you keep subdividing
-            |a triangle into smaller and smaller triangles.
-            |""".stripMargin),
+          Challenge.split(<.pre(
+            """function sierpinski(d) {
+              |    triangle(d)
+              |    if (d > 20) {
+              |        triangle(d/2)
+              |        forward(d)
+              |        left(120)
+              |        triangle(d/2)
+              |        forward(d)
+              |        left(120)
+              |        triangle(d/2)
+              |        forward(d)
+              |        left(120)
+              |    }
+              |}
+              |""".stripMargin
+          ))(<.pre(
+            """function sierpinski(d) {
+              |    triangle(d)
+              |    if (d > 20) {
+              |        sierpinski(d/2)
+              |        forward(d)
+              |        left(120)
+              |        sierpinski(d/2)
+              |        forward(d)
+              |        left(120)
+              |        sierpinski(d/2)
+              |        forward(d)
+              |        left(120)
+              |    }
+              |}""".stripMargin
+          )),
+          Common.markdown(
+            """
+              |It's now recursive, and will draw a recursive pattern that is what you get if you keep subdividing
+              |a triangle into smaller and smaller triangles.
+              |""".stripMargin)
+        ),
         () => VNodeStage.card(PrefabCodable(
           """function triangle(d) {
             |    for (let i = 0; i < 3; i++) {
@@ -611,6 +607,8 @@ object TurtleTutorial {
             |We're just going to see how this can produce some very interesting patterns (although it is very hard
             |to trace what's going on in the code in your head)
             |
+            |Below, we've got two functions, just called `a` and `b`. They call each other (several times), and they look somewhat like
+            |mirror images of each other.
             |""".stripMargin),
           Challenge.split(
             <.pre(
