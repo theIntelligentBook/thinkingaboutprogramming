@@ -38,6 +38,11 @@ object Intro {
            |* [Tutorial: Turtle Graphics](${ChallengeRoute("turtleGraphics", 0, 0).path})  \t
            |  ...in which we meet a turtle and draw some shapes
            |
+           |## 2. Types
+           |
+           |* [Types](${DeckRoute("types", 0).path})  \t
+           |  ...in which we consider what operations mean when applied to different things
+           |
            |""".stripMargin
       )
     ),
