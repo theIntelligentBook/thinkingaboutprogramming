@@ -247,6 +247,32 @@ object PrimitiveTypes {
         JSCodable(Maze()((0,0), (0,0)) { _ => })(tilesMode = false)
       )
     ))
+    .veautifulSlide(<.div(
+      <.h2("Type Conversions"),
+      Challenge.split(
+        Common.markdown(
+          """Because JavaScript is weakly typed, type conversions can give you some unexpected results
+            |
+            |* e.g., "true" converts to 1, so `1 + true` is `2`
+            |
+            |* `"0" + 0` versus `"1" - 1`
+            |
+            |Because it is dynamically typed, also applies within functions
+            |
+            |```js
+            |function addOne(x) {
+            |  return x + 1
+            |}
+            |```
+            |
+            |`addOne(1)` vs `addOne("1")`
+            |
+            |""".stripMargin
+        )
+      )(
+        JSCodable(Maze()((0,0), (0,0)) { _ => })(tilesMode = false)
+      )
+    ))
     .markdownSlide(
       """## Types in JavaScript
         |
