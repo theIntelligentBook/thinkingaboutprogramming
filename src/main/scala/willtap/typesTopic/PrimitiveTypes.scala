@@ -353,11 +353,11 @@ object PrimitiveTypes {
          |
          |Imagine it like in mathematics, storing
          |
-         |* 1,234 as `1.234 * 10<sup>3</sup>`
+         |* 1,234 as <i>1.234 &times; 10<sup>3</sup></i>
          |
-         |* 0.00001234 as `1.234 * 10<sup>-5</sup>`
+         |* 0.00001234 as <i>1.234 &times; 10<sup>-5</sup></i>
          |
-         |* -0.00001234 as `-1 * 1.234 * 10<sup>-5</sup>`
+         |* -0.00001234 as <i>-1 &times; 1.234 &times; 10<sup>-5</sup></i>
          |
          |A number has a *sign*, some digits (the *mantissa*) and an *exponent*
          |
