@@ -273,6 +273,28 @@ object PrimitiveTypes {
         JSCodable(Maze()((0,0), (0,0)) { _ => })(tilesMode = false)
       )
     ))
+    .veautifulSlide(<.div(
+      <.h2("Two kinds of equality"),
+      Challenge.split(
+        Common.markdown(
+          """When testing whether values are equal, in JavaScript you have to decide whether you want to let it do a
+            |type conversion
+            |
+            |* The `==` and `!=` operators allow type conversions
+            |
+            |  `"1" == 1` is true, and `"1" != 1` is false
+            |
+            |* The `===` and `!==` operators do not allow type conversions.
+            |
+            |  These are the "strict equality" and "strict inequality" operators
+            |
+            |  `"1" === 1` is *false*. `"1" !== 1` is *true*
+            |""".stripMargin
+        )
+      )(
+        JSCodable(Maze()((0,0), (0,0)) { _ => })(tilesMode = false)
+      )
+    ))
     .markdownSlide(
       """## Types in JavaScript
         |
