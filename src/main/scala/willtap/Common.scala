@@ -3,7 +3,7 @@ package willtap
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, TurtleTutorial}
-import willtap.typesTopic.TypesTalk
+import willtap.typesTopic.PrimitiveTypes
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -93,7 +93,7 @@ object Common {
   val decks:Map[String, VSlides] = Map(
     "impossibleThings" -> ImpossibleThings.deck,
     "commandsAndFunctions" -> CommandsAndFunctions.deck,
-    "types" -> TypesTalk.deck
+    "types" -> PrimitiveTypes.deck
   )
 
   val challenges:Map[String, Challenge] = Map(
