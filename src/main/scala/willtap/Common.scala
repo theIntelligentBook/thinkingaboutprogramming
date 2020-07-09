@@ -2,7 +2,7 @@ package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
-import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, TurtleTutorial}
+import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import willtap.typesTopic.PrimitiveTypes
 
 import scala.collection.mutable
@@ -97,7 +97,8 @@ object Common {
   )
 
   val challenges:Map[String, Challenge] = Map(
-    "turtleGraphics" -> TurtleTutorial.challenge
+    "turtleGraphics" -> TurtleTutorial.challenge,
+    "lavaMaze" -> SnobotTutorial.challenge
   )
 
   def showDeck(s:String, p:Int):VHtmlNode = {

@@ -43,6 +43,9 @@ object Intro {
            |* [Types](${DeckRoute("types", 0).path})  \t
            |  ...in which we consider what operations mean when applied to different things
            |
+           |* [Tutorial: Welcome to the Lava Maze](${ChallengeRoute("lavaMaze", 0, 0).path})  \t
+           |  ...in which we get Snobot through some simple mazes and complete assignment 1.
+           |
            |""".stripMargin
       )
     ),
