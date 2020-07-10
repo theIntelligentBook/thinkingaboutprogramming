@@ -581,6 +581,339 @@ object SnobotTutorial {
       )
 
     )),
+
+    Level(name = "ASSIGNMENT", stages = Seq(
+
+      VNodeStage.twoColumn("Your Assignment: Help Snobot Escape")(() => Common.markdown(
+        s"""
+           |Welcome to your escape assignment.
+           |
+           |There are seven levels. None of them require "flood fill" or anything that advanced, though there might be
+           |some littler puzzles in them about how the pieces work. The challenges exercise your JavaScript programming
+           |skills, for example loops and conditionals
+           |
+           |Each maze flips between two versions, so you can't *just* have a fixed list of directions to solve it.
+           |Your solution to each maze will probably be some custom code, though. e.g. for the maze on the right,
+           |go right while you can, then go down while you can.
+           |
+           |Remember: **Run your code against both versions of that exercise's maze** (i.e. run it twice to check it
+           |works for both that level's mazes).
+           |
+           |Remember: `canGoRight()` will return `false` if there is a boulder to your right, even if you can push it.
+           |The same is true for the other `canGo` functions.
+           |
+           |The only functions you have are:
+           |
+           |* `canGoLeft()`, `canGoRight()`, `canGoUp()`, `canGoDown()`
+           |* `left()`, `right()`, `up()`, `down()`
+           |
+           |The rest is up to you...
+           |
+           |Again, don't forget:
+           |
+           |* **The maze cannot save your code** - copy and paste it regularly into a document you save
+           |
+           |* **The maze cannot submit your code** - if you are submitting these for course credit, you will need to
+           |  use your school or university's submission system
+           |""".stripMargin),
+        () => VNodeStage.card(PrefabCodable(
+          """while(canGoRight() || canGoDown()) {
+            |  if (canGoRight()) {
+            |    right()
+            |  } else {
+            |    down()
+            |  }
+            |}
+            |""".stripMargin,
+          {
+            var parity = false
+            smallMaze("Hello world", 8 -> 6, 8 -> 6, setup = { maze =>
+              parity = !parity
+              if (parity) {
+                maze.loadFromString(
+                  s"""
+                     | Z.S...
+                     |      *
+                     |      1
+                     |      G
+                     |""".stripMargin)
+              } else {
+                maze.loadFromString(
+                  s"""
+                     | Z.S..
+                     |     .*
+                     |      1
+                     |      G
+                     |""".stripMargin)
+              }
+            })
+          }
+        ))
+      ),
+
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 1: Snakey maze
+            |
+            |This maze always goes right, down, doubles back on itself, and then doubles back to the exit
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  | S......
+                  |       .
+                  |    ....
+                  |    .
+                  |    .
+                  |    ....G
+                  |""".stripMargin
+              } else {
+                """
+                  | S.......
+                  |        .
+                  |        .
+                  |  .......
+                  |  .
+                  |  ......G
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      },
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 2: Boulder over
+            |
+            |There is a boulder between you and the exit. Remember, `canGoRight()` will return `false` if it sees a
+            |boulder (even a pushable one)
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  | ########
+                  | ###..###
+                  | #S..O..G#
+                  | ###..###
+                  | ########
+                  | ########
+                  |""".stripMargin
+              } else {
+                """
+                  | ########
+                  | ###...##
+                  | #S...O.G#
+                  | ###...##
+                  | ########
+                  | ########
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      },
+
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 3: It is a Blob *Guard*
+            |
+            |There is a homing blob guard between you and the exit.
+            |
+            |The second configuration of this maze is probably harder than the first for your program to solve, so
+            |remember to run it twice!
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  |##########
+                  |##.*...###
+                  |##.###.###
+                  |S..###..ZG
+                  |##.###.###
+                  |##.1...###
+                  |##########
+                  |""".stripMargin
+              } else {
+                """
+                  |##########
+                  |#.*.....##
+                  |#..####.##
+                  |S.#####.ZG
+                  |#..####.##
+                  |#.1.....##
+                  |##########
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      },
+
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 4: Another Blob Guard puzzle
+            |
+            |There is a homing blob guard between you and the exit
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  |###.######
+                  |##.O...###
+                  |##..##.###
+                  |S...##..ZG
+                  |##..##.###
+                  |##.O...###
+                  |###.######
+                  |""".stripMargin
+              } else {
+                """
+                  |###.######
+                  |##..##.###
+                  |##.O...###
+                  |S...##..ZG
+                  |##.O...###
+                  |##..##.###
+                  |###.######
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      },
+
+    {
+      var parity = false
+      mdTask(
+        """## Exercise 5: Operation boulder drop
+          |
+          |Each version of this maze has a boulder that wants to roll south
+          |
+          |""".stripMargin,
+        setup = maze => {
+          parity = !parity
+          maze.loadFromString(
+            if (parity) {
+              """   S
+                | #...#
+                | #.v.#
+                | #***#
+                | #2#2#
+                | #.#.#
+                | #.#.###
+                | #...ZG#
+                | #######
+                |""".stripMargin
+            } else {
+              """   S
+                | #...#
+                | #...#
+                | #.v.#
+                | #*O*#
+                | #1#1#
+                | #.#.###
+                | #....G#
+                | #######
+                |""".stripMargin
+            }
+          )
+        },
+      )
+    },
+
+    {
+      var parity = false
+      mdTask(
+        """## Exercise 6: The diamond shuffle
+          |
+          |You'll need to collect all the diamonds to get through the gate.
+          |
+          |Try not to get trapped...
+          |
+          |""".stripMargin,
+        setup = maze => {
+          parity = !parity
+          maze.loadFromString(
+            if (parity) {
+              """
+                |
+                |###########
+                |S..vvvv.5G#
+                |..*****####
+                |########
+                |""".stripMargin
+            } else {
+              """
+                |
+                |###########
+                |..Svvvv.5G#
+                |..*****####
+                |########
+                |""".stripMargin
+            }
+          )
+        },
+      )
+    },
+
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 7: Spot the Difference
+            |
+            |In this one, the puzzle is not to block yourself. But, armed only with `canGoLeft()`, `canGoRight()`, etc.,
+            |you're going to need to figure out which configuration the maze is so you'll know if you can keep the left
+            |or right goals unblocked.
+            |
+            |Hint: you're going to need that boulder in the middle.
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  | ####S####
+                  | #v*...*v#
+                  | #2.>1..2#
+                  | #.......#
+                  | ..#   #..
+                  | #G#   #G#
+                  | ###   ###
+                  |""".stripMargin
+              } else {
+                """
+                  | ####S####
+                  | #v*...*v#
+                  | #2..1<.2#
+                  | #.......#
+                  | ..#   #..
+                  | #G#   #G#
+                  | ###   ###
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      }
+
+    ))
   )
 
 
