@@ -588,7 +588,7 @@ object SnobotTutorial {
         s"""
            |Welcome to your escape assignment.
            |
-           |There are seven levels. None of them require "flood fill" or anything that advanced, though there might be
+           |There are eight levels, numbered 0 to 7. None of them require "flood fill" or anything that advanced, though there might be
            |some littler puzzles in them about how the pieces work. The challenges exercise your JavaScript programming
            |skills, for example loops and conditionals
            |
@@ -650,7 +650,39 @@ object SnobotTutorial {
           }
         ))
       ),
-
+      {
+        var parity = false
+        mdTask(
+          """## Exercise 0: Just go down
+            |
+            |Snobot just has to go down. But he also has to stop at the right point because he can roll past the goal
+            |
+            |""".stripMargin,
+          setup = maze => {
+            parity = !parity
+            maze.loadFromString(
+              if (parity) {
+                """
+                  | S
+                  | .
+                  | .
+                  | .
+                  | .
+                  | G
+                  |""".stripMargin
+              } else {
+                """
+                  | S
+                  | .
+                  | .
+                  | .
+                  | G
+                  |""".stripMargin
+              }
+            )
+          },
+        )
+      },
       {
         var parity = false
         mdTask(
