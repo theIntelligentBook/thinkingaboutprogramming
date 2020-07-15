@@ -46,6 +46,11 @@ object Intro {
            |* [Tutorial: Welcome to the Lava Maze](${ChallengeRoute("lavaMaze", 0, 0).path})  \t
            |  ...in which we get Snobot through some simple mazes and complete assignment 1.
            |
+           |## 3. Objects and Events
+           |
+           |* [Reference Types](${DeckRoute("objectTypes", 0).path})  \t
+           |  ...in which we consider whether a copy of you would be you
+           |
            |""".stripMargin
       )
     ),
