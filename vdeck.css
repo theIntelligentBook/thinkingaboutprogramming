@@ -202,6 +202,7 @@
 /* pp - two portrait pictures side-by-side */
 .v-slide .image-slide.pp img, .sc img {
     width: 50%;
+    margin: 0;
 }
 
 .v-slide .image-slide figcaption {
