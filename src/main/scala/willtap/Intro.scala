@@ -51,6 +51,10 @@ object Intro {
            |* [Reference Types](${DeckRoute("objectTypes", 0).path})  \t
            |  ...in which we consider whether a copy of you would be you
            |
+           |## 4. Robots and Control
+           |
+           |* [Open and Closed Loop Control](${DeckRoute("closedLoop", 0).path})  \t
+           |  ...in which we start to move from dead reckoning to using feedback
            |""".stripMargin
       )
     ),
