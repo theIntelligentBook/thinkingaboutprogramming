@@ -201,21 +201,7 @@ object ObjectTypes {
     .markdownSlide(
       """## Useful array methods
         |
-        |* `days.slice[1, -1]` - `slice` is a convenient way to take part of an array as another array
-        |
-        |* `days.push("Octaday")` - `push` adds an element to the end of an array
-        |
-        |* `let o = days.pop()` - removes the last element from an array
-        |
-        |* `days.reverse()` - reverses an array
-        |
-        |There are plenty more on [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
-        |
-        |""".stripMargin)
-    .markdownSlide(
-      """## Useful array methods
-        |
-        |* `days.slice[1, -1]` - `slice` is a convenient way to take part of an array as another array
+        |* `days.slice(1, -1)` - `slice` is a convenient way to take part of an array as another array
         |
         |* `days.push("Octaday")` - `push` adds an element to the end of an array
         |
