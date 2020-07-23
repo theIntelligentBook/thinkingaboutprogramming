@@ -6,6 +6,8 @@ import com.wbillingsley.veautiful.html.{<, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
 import willtap.Common
 
+import scala.util.Random
+
 object OpenAndClosedLoop {
 
   val scilly = <.img(^.src := "images/control/scilly isles.jpg").create()
@@ -162,14 +164,14 @@ object OpenAndClosedLoop {
         |""".stripMargin)
     .veautifulSlide(
       <.div(^.cls := "wrapper",
-        <.img(^.src := "images/control/edison.jpg"),
+        <.img(^.src := "images/control/edison ipad.jpg"),
         <.img(^.src := "images/control/edgefollowing.png"),
         <("figcaption")("Edison. One line sensor. Follow the edge.")
       )
     ).withClass("image-slide pp contain")
     .veautifulSlide(
       <.div(^.cls := "wrapper",
-        <.img(^.src := "images/control/bitbot.jpg"),
+        <.img(^.src := "images/control/bitbot ipad.jpg"),
         <.img(^.src := "images/control/aroundtheline.png"),
         <("figcaption")("Bit:Bot. Two widely spaced line sensors. Surround the line.")
       )
@@ -184,10 +186,10 @@ object OpenAndClosedLoop {
     .veautifulSlide(
       <.div(^.cls := "wrapper",
         <.img(^.src := "images/control/bitbot.jpg"),
-        <.img(^.src := "images/control/edgefollowing.png"),
-        <("figcaption")("Edison. One line sensor. Follow the edge.")
+        <.img(^.src := "images/control/makebot grabber.jpg"),
+        <("figcaption")("Sometimes the line looks black to you, but not to the robot.")
       )
-    ).withClass("image-slide pp contain")
+    ).withClass("image-slide pp cover")
     .veautifulSlide(<.div(
       <.h2("Introducing... LineTurtle"),
       Common.markdown(
@@ -198,14 +200,21 @@ object OpenAndClosedLoop {
           |Let's implement our line followers...
           |""".stripMargin),
       JSCodable(CanvasLand()(
-        fieldSize=(1000 -> 1000),
-        r = LineBot(150, 100) { r => },
+        fieldSize=(920 -> 640),
+        viewSize=(920 -> 640),
+        r = LineBot(120, 100) { r =>  },
         setup = c => {
-          c.fillCanvas("rgb(200,180,0)")
+          c.fillCanvas("white")
           c.drawGrid("rgb(200,240,240)", 25, 1)
           c.withCanvasContext { ctx =>
-            ctx.fillStyle = "rgb(60,60,60)"
-            ctx.fillRect(50, 100, 900, 100)
+            ctx.strokeStyle = "rgb(60,60,60)"
+            ctx.lineWidth = 25
+            ctx.beginPath()
+            ctx.moveTo(100, 100)
+            ctx.lineTo(770, 100)
+            ctx.lineTo(770, 540)
+            ctx.bezierCurveTo(670, 540, 150, 200, 150, 100)
+            ctx.stroke()
           }
         }
       ))(tilesMode = false)
@@ -218,14 +227,21 @@ object OpenAndClosedLoop {
           |us some "damping" in our control system (the oscillations get smaller).
           |""".stripMargin),
       JSCodable(CanvasLand()(
-        fieldSize=(1000 -> 1000),
-        r = LineBot(150, 100) { r => },
+        fieldSize=(920 -> 640),
+        viewSize=(920 -> 640),
+        r = LineBot(120, 100) { r => },
         setup = c => {
           c.fillCanvas("rgb(200,180,0)")
           c.drawGrid("rgb(200,240,240)", 25, 1)
           c.withCanvasContext { ctx =>
-            ctx.fillStyle = "rgb(60,60,60)"
-            ctx.fillRect(50, 100, 900, 100)
+            ctx.strokeStyle = "rgb(60,60,60)"
+            ctx.lineWidth = 50
+            ctx.beginPath()
+            ctx.moveTo(100, 100)
+            ctx.lineTo(770, 100)
+            ctx.lineTo(770, 540)
+            ctx.bezierCurveTo(670, 540, 150, 200, 150, 100)
+            ctx.stroke()
           }
         }
       ))(tilesMode = false)
@@ -255,9 +271,6 @@ object OpenAndClosedLoop {
         |
         |""".stripMargin
     )
-    .markdownSlide(
-      """## still writing slides...
-        |""".stripMargin)
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 
