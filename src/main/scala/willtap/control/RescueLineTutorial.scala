@@ -52,6 +52,15 @@ object RescueLineTutorial {
   }
 
   def applyStandardInaccuracy(r:LineTurtle):Unit = {
+    r.moveWobble = Random.nextDouble * 0.02
+    r.moveWobbleBias = (Random.nextDouble - 0.5) * 0.0001
+    r.turnInaccuracy = Random.nextDouble * 0.05
+    r.turnBias = (Random.nextDouble - 0.5) * 0.05
+    r.moveInaccuracy = Random.nextDouble * 0.05
+    r.moveBias = (Random.nextDouble - 0.5) * 0.05
+  }
+
+  def applyLargeInaccuracy(r:LineTurtle):Unit = {
     r.sensorLimit = 16
     r.moveWobble = Random.nextDouble * 0.02
     r.moveWobbleBias = (Random.nextDouble - 0.5) * 0.0001
@@ -61,13 +70,16 @@ object RescueLineTutorial {
     r.moveBias = (Random.nextDouble - 0.5) * 0.1
   }
 
-  def smallMaze(s:String, tw:Int = 5, th:Int = 2, start:(Int, Int) = (0, 0), inaccurate:Boolean = true)(f: dom.CanvasRenderingContext2D => Unit) = {
+  def smallMaze(s:String, tw:Int = 5, th:Int = 2, start:(Int, Int) = (0, 0), inaccurate:Boolean = true, largeInaccurate:Boolean=false)(f: dom.CanvasRenderingContext2D => Unit) = {
     CanvasLand(s)(
       viewSize = (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
       fieldSize= (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
       r = LineTurtle(start._1 * RescueLine.tileSize + RescueLine.halfTile, start._2 * RescueLine.tileSize + RescueLine.halfTile) { r =>
         r.penDown = false
+        r.sensorLimit = 16
+
         if (inaccurate) applyStandardInaccuracy(r)
+        if (largeInaccurate) applyLargeInaccuracy(r)
       },
       setup = c => {
         c.fillCanvas("white")
@@ -179,7 +191,7 @@ object RescueLineTutorial {
             |right(90)
             |forward(480)
             |""".stripMargin,
-          smallMaze("Hello world") { ctx =>
+          smallMaze("Hello world", largeInaccurate = true) { ctx =>
             RescueLine.start(0, 0, RescueLine.FACING_EAST, ctx)
             RescueLine.straight(1, 0, RescueLine.FACING_EAST, ctx)
             RescueLine.straight(2, 0, RescueLine.FACING_EAST, ctx)
