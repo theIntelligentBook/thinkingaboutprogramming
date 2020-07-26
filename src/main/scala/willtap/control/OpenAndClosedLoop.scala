@@ -1,6 +1,6 @@
 package willtap.control
 
-import canvasland.{CanvasLand, LineBot, Turtle}
+import canvasland.{CanvasLand, LineTurtle, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.html.{<, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
@@ -202,7 +202,7 @@ object OpenAndClosedLoop {
       JSCodable(CanvasLand()(
         fieldSize=(920 -> 640),
         viewSize=(920 -> 640),
-        r = LineBot(120, 100) { r =>  },
+        r = LineTurtle(120, 100) { r =>  },
         setup = c => {
           c.fillCanvas("white")
           c.drawGrid("rgb(200,240,240)", 25, 1)
@@ -229,7 +229,7 @@ object OpenAndClosedLoop {
       JSCodable(CanvasLand()(
         fieldSize=(920 -> 640),
         viewSize=(920 -> 640),
-        r = LineBot(120, 100) { r => },
+        r = LineTurtle(120, 100) { r => },
         setup = c => {
           c.fillCanvas("rgb(200,180,0)")
           c.drawGrid("rgb(200,240,240)", 25, 1)

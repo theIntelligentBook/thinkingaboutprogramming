@@ -2,7 +2,7 @@ package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
-import willtap.control.OpenAndClosedLoop
+import willtap.control.{OpenAndClosedLoop, RescueLineTutorial}
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import willtap.typesTopic.{ObjectTypes, PrimitiveTypes}
 
@@ -101,7 +101,8 @@ object Common {
 
   val challenges:Map[String, Challenge] = Map(
     "turtleGraphics" -> TurtleTutorial.challenge,
-    "lavaMaze" -> SnobotTutorial.challenge
+    "lavaMaze" -> SnobotTutorial.challenge,
+    "rescueLine" -> RescueLineTutorial.challenge,
   )
 
   def showDeck(s:String, p:Int):VHtmlNode = {

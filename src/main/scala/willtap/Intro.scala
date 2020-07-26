@@ -55,6 +55,9 @@ object Intro {
            |
            |* [Open and Closed Loop Control](${DeckRoute("closedLoop", 0).path})  \t
            |  ...in which we start to move from dead reckoning to using feedback
+           |
+           |* [Tutorial: Rescue Line](${ChallengeRoute("rescueLine", 0, 0).path})  \t
+           |  ...in which we get LineTurtle through some simple mazes and complete assignment 2.
            |""".stripMargin
       )
     ),
