@@ -25,40 +25,24 @@ object RescueLineTutorial {
 
   implicit val onCompletionUpdate: () => Unit = () => challenge.rerender()
 
-
-  object DrawASquare extends ExerciseStage() {
-    override def completion: Challenge.Completion = Complete(None, None)
-
-    override protected def render: DiffNode[Element, Node] = Challenge.textColumn(
-      <.div(^.cls := "lead",
-        Common.markdown(
-          """First of all, let's just draw a triangle. There are three sides to a triangle, so three times we're going to need to go `forward(100)`, then turn
-            |`left(120)`.
-            |
-            |Initially, just write it out longhand. Then, try putting it into a C-style for-loop.
-            |
-            |If you need them, there are crib notes on the next page. You can go forward and back between exercises at any time using the navigation on the right.
-            |""".stripMargin),
-      ),
-      JSCodable(CanvasLand("drawASquare")(
-        r = Turtle(320, 320),
-        setup = (c) => {
-          c.drawGrid("lightgray", 25)
-        }
-      ))()
-    )
-  }
-
-  def mdTask(markdown:String, start:(Int, Int) = 320 -> 320) = new ExerciseStage() {
+  def mdTask(markdown:String, tw:Int = 5, th:Int = 5, start:(Int, Int) = (0, 0), inaccurate:Boolean = true)(f: dom.CanvasRenderingContext2D => Unit) = new ExerciseStage() {
 
     override def completion: Challenge.Completion = Open
 
     private val (rx, ry) = start
 
-    val codable = JSCodable(CanvasLand("drawASquare")(
-      r = Turtle(rx, ry),
-      setup = (c) => {
-        c.drawGrid("lightgray", 25)
+    val codable = JSCodable(CanvasLand("exercise")(
+      fieldSize= (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
+      r = LineTurtle(start._1 * RescueLine.tileSize + RescueLine.halfTile, start._2 * RescueLine.tileSize + RescueLine.halfTile) { r =>
+        r.penDown = false
+        if (inaccurate) applyStandardInaccuracy(r)
+      },
+      setup = c => {
+        c.fillCanvas("white")
+        c.drawGrid("rgb(200,240,240)", RescueLine.tileSize, 1)
+        c.withCanvasContext { ctx =>
+          f(ctx)
+        }
       }
     ))(tilesMode = false)
 
@@ -77,11 +61,11 @@ object RescueLineTutorial {
     r.moveBias = (Random.nextDouble - 0.5) * 0.1
   }
 
-  def smallMaze(s:String, tw:Int = 5, th:Int = 2, inaccurate:Boolean = true)(f: dom.CanvasRenderingContext2D => Unit) = {
+  def smallMaze(s:String, tw:Int = 5, th:Int = 2, start:(Int, Int) = (0, 0), inaccurate:Boolean = true)(f: dom.CanvasRenderingContext2D => Unit) = {
     CanvasLand(s)(
       viewSize = (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
       fieldSize= (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
-      r = LineTurtle(RescueLine.halfTile, RescueLine.halfTile) { r =>
+      r = LineTurtle(start._1 * RescueLine.tileSize + RescueLine.halfTile, start._2 * RescueLine.tileSize + RescueLine.halfTile) { r =>
         r.penDown = false
         if (inaccurate) applyStandardInaccuracy(r)
       },
@@ -280,7 +264,360 @@ object RescueLineTutorial {
           }, codeStyle = Some("max-height: 400px;")
         ))
       ),
-    ))
+      VNodeStage.twoColumn("Rescue Zones")(() => Common.markdown(
+        s"""
+           |Sometimes, you will come across an orange area with no line. This is the chemical spill.
+           |
+           |Inside the chemical spill, there may be green circles (survivors) in locations that move slightly
+           |with each reset of the maze.
+           |
+           |Your robot should enter the orange zone, search for survivors and "rescue" them by painting a blue blob
+           |on the survivor. (`setColour("blue")` and `penDown()` are available on the turtle to do this.
+           |You'll then need to move forward a pixel to make it paint. Don't forget to `penUp()` afterwards.)
+           |
+           |Once your robot has found a survivor, it should find the line out of the chemical spill to continue its
+           |journey. Try not to accidentally go back the way you came!
+           |
+           |The example code we've given you demonstrates a simple search pattern for a survivor
+           |Again, it's not as sophisticated as what you will probably need.
+           |For example, the sample code forgets to keep looking for the exit afterwards.
+           |It's also a little susceptible to the problem that it can "look" at the edge of the survivor, reading some
+           |orange and some green pixels. In which case, because the red and green it sees are roughly equal, it decides it's
+           |neither part of the rescue zone nor the survivor.
+           |
+           |**Note** The survivor is quite a dark green (darker than the turn signal green).
+           |
+           |There is always exactly one survivor in each rescue zone, but rescue zones can vary in size.
+           |""".stripMargin),
+        () => VNodeStage.card(PrefabCodable(
+          """addLineSensor(20, 0, 255, 0, 0) // colour sensor - red component
+            |addLineSensor(20, 0, 0, 255, 0) // colour sensor - non-red component
+            |
+            |let foundSurvivor = false
+            |
+            |function isOrange() {
+            |  let r = readSensor(0)
+            |  let g = readSensor(1)
+            |
+            |  // orange is more red than green
+            |  if (r > 0.4 && g < 0.9 * r) {
+            |    return true
+            |  } else {
+            |    return false
+            |  }
+            |}
+            |
+            |function isSurvivor() {
+            |  let r = readSensor(0)
+            |  let g = readSensor(1)
+            |  console.log(`r is ${r} and g is ${g}`)
+            |
+            |  // The survivor colour has a lot of green in it and not much red
+            |  if (g > 0.4 && r < 0.9 * g) {
+            |    return true
+            |  } else {
+            |    return false
+            |  }
+            |}
+            |
+            |// bad - the sample isn't even following the line!
+            |while (!isOrange()) {
+            |  forward(5)
+            |}
+            |forward(20)
+            |left(80)
+            |
+            |// start searching for a survivor
+            |let toggle = false
+            |while (!foundSurvivor) {
+            |   while (isOrange()) {
+            |     forward(10)
+            |   }
+            |   if (isSurvivor()) {
+            |     foundSurvivor = true
+            |     forward(20)
+            |     setColour("blue")
+            |     penDown()
+            |     forward(1)
+            |     penUp()
+            |     forward(10)
+            |   } else {
+            |     toggle = !toggle
+            |     if (toggle) {
+            |       right(160)
+            |     } else {
+            |       left(160)
+            |     }
+            |   }
+            |}
+            |
+            |""".stripMargin,
+          smallMaze("Hello world", th=3, start=(0,1), inaccurate = true) { ctx =>
+            RescueLine.start(0, 1, RescueLine.FACING_EAST, ctx)
+            RescueLine.straight(1, 1, RescueLine.FACING_EAST, ctx)
+            RescueLine.rescueZone(2, 1, RescueLine.FACING_EAST, ctx)
+            RescueLine.rescueSurvivor(3, 1, RescueLine.FACING_EAST, ctx)
+            RescueLine.end(4, 1, RescueLine.FACING_EAST, ctx)
+          }, codeStyle = Some("max-height: 300px;")
+        ))
+      ),
+      VNodeStage.twoColumn("Assignment Levels")(() => Common.markdown(
+        s"""
+           |There are *two* sets of levels for your robot to attempt:
+           |
+           |* **Set 1** have a robot that works accurately
+           |* **Set 2** has a robot that has inaccuracies built in
+           |
+           |You should use the same code across *both* sets.
+           |
+           |**Remember:** This challenge doesn't save your work, doesn't submit your work, doesn't mark your work. If
+           |you are taking this challenge as part of a class's assessment (rather than just finding it out in public),
+           |you'll need to submit your code via your class's submission mechanism.
+           |
+           |Set 2 is harder than Set 1. This is so that when this is used as a class exercise, there are enough marks
+           |in the easier challenge that "perfection" doesn't become the minimum standard.
+           |""".stripMargin),
+        () => <.div()
+      ),
+    )),
+    Level(name = "ASSIGNMENT Set 1", stages = Seq(
+      mdTask(
+        """#### Set 1, Stage 1
+          |
+          |Just make your way to the exit
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        end(3, 1, FACING_EAST, ctx)
+      },
+
+      mdTask(
+        """#### Set 1, Stage 2
+          |
+          |Just make your way to the exit
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        straight(3, 1, FACING_EAST, ctx)
+        end(4, 1, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 1, Stage 3
+          |
+          |Just make your way to the exit
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        straight(3, 1, FACING_EAST, ctx)
+        sharpTurnRight(4, 1, FACING_EAST, ctx)
+        end(4, 2, FACING_SOUTH, ctx)
+      },
+      mdTask(
+        """#### Set 1, Stage 4
+          |
+          |Remember, a green square before a t-juntion tells you which way to turn
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        teeRight(3, 1, FACING_EAST, ctx)
+        teeLeft(3, 2, FACING_SOUTH, ctx)
+        end(4, 2, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 1, Stage 5
+          |
+          |Remember, a green square before a t-juntion tells you which way to turn.
+          |If there's no green square at a cross-roads, go straight across.
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        crossRoad(2, 1, FACING_EAST, ctx)
+        teeRight(3, 1, FACING_EAST, ctx)
+        teeRight(3, 2, FACING_SOUTH, ctx)
+        teeRight(2, 2, Math.PI, ctx)
+        end(2, 0, FACING_NORTH, ctx)
+      },
+      mdTask(
+        """#### Set 1, Stage 6
+          |
+          |Remember, a green square before a t-juntion tells you which way to turn.
+          |If there's no green square at a cross-roads, go straight across.
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        hump(1, 1, FACING_EAST, ctx)
+        crossRoad(2, 1, FACING_EAST, ctx)
+        teeRight(3, 1, FACING_EAST, ctx)
+        roundaboutLeft(3, 2, FACING_EAST, ctx)
+        teeRight(2, 2, Math.PI, ctx)
+        end(2, 0, FACING_NORTH, ctx)
+      },
+      mdTask(
+        """#### Set 1, Stage 7
+          |
+          |Remember, a green square before a t-juntion tells you which way to turn.
+          |If there's no green square at a cross-roads, go straight across.
+          |""".stripMargin, start=(0, 1), inaccurate = false) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        crossRoad(2, 1, FACING_EAST, ctx)
+        teeRight(3, 1, FACING_EAST, ctx)
+        dashed(3, 2, FACING_SOUTH, ctx)
+        roundaboutLeft(3, 3, FACING_EAST, ctx)
+        teeRight(2, 3, Math.PI, ctx)
+        dashedHump(2, 2, FACING_SOUTH, ctx)
+        end(2, 0, FACING_NORTH, ctx)
+      }
+    )),
+    Level(name = "ASSIGNMENT Set 2", stages = Seq(
+      mdTask(
+        """#### Set 2, Stage 1
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        straight(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        end(3, 1, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 2, Stage 2
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        hump(2, 1, FACING_EAST, ctx)
+        sharpTurnRight(3, 1, FACING_EAST, ctx)
+        end(3, 2, FACING_SOUTH, ctx)
+      },
+      mdTask(
+        """#### Set 2, Stage 3
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        hump(2, 1, FACING_EAST, ctx)
+        sharpTurnRight(3, 1, FACING_EAST, ctx)
+        crossRoad(3, 2, FACING_SOUTH, ctx)
+        teeRight(3, 3, FACING_SOUTH, ctx)
+        dashed(2, 3, FACING_EAST, ctx)
+        teeRight(1, 3, Math.PI, ctx)
+        sharpTurnRight(1, 2, FACING_NORTH, ctx)
+        dashed(2, 2, FACING_EAST, ctx)
+        end(4,2, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 2, Stage 4
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        hump(2, 1, FACING_EAST, ctx)
+        sharpTurnRight(3, 1, FACING_EAST, ctx)
+        crossRoad(3, 2, FACING_SOUTH, ctx)
+        teeRight(3, 3, FACING_SOUTH, ctx)
+        zigzag(2, 3, FACING_EAST, ctx)
+        teeRight(1, 3, Math.PI, ctx)
+        sharpTurnRight(1, 2, FACING_NORTH, ctx)
+        roundaboutAhead(2, 2, FACING_EAST, ctx)
+        end(4,2, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 2, Stage 5
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        straight(2, 1, FACING_EAST, ctx)
+        sharpTurnRight(3, 1, FACING_EAST, ctx)
+        crossRoad(3, 2, FACING_SOUTH, ctx)
+        rescueSurvivor(3, 3, FACING_EAST, ctx)
+        end(3, 4, FACING_SOUTH, ctx)
+
+      },
+      mdTask(
+        """#### Set 2, Stage 6
+          |
+          |Remember, in Set 2, the robot is not perfectly accurate in its movements
+          |""".stripMargin, start=(0, 1), inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 1, FACING_EAST, ctx)
+        dashed(1, 1, FACING_EAST, ctx)
+        hump(2, 1, FACING_EAST, ctx)
+        sharpTurnRight(3, 1, FACING_EAST, ctx)
+        crossRoad(3, 2, FACING_SOUTH, ctx)
+        rescueSurvivor(3, 3, FACING_EAST, ctx)
+        teeRight(3, 4, FACING_SOUTH, ctx)
+        zigzag(2, 4, FACING_EAST, ctx)
+        teeRight(1, 4, FACING_WEST, ctx)
+        straight(1, 3, FACING_NORTH, ctx)
+        sharpTurnRight(1, 2, FACING_NORTH, ctx)
+        roundaboutAhead(2, 2, FACING_EAST, ctx)
+        end(4,2, FACING_EAST, ctx)
+      },
+      mdTask(
+        """#### Set 2, Stage 7
+          |
+          |The ultimate test in this assignment.
+          |Remember, there's a survivor in each rescue zone.
+          |""".stripMargin, th=6, inaccurate = true) { ctx =>
+        import RescueLine._
+
+        start(0, 0, FACING_EAST, ctx)
+        dashed(1, 0, FACING_EAST, ctx)
+        hump(2, 0, FACING_EAST, ctx)
+        roundaboutAhead(3, 0, FACING_EAST, ctx)
+        sharpTurnRight(4, 0, FACING_EAST, ctx)
+        roundaboutLeft(4, 1, FACING_EAST, ctx)
+        rescueZone(3, 1, FACING_EAST, ctx)
+        rescueSurvivor(2, 1, FACING_EAST, ctx)
+        sharpTurnLeft(2, 2, FACING_SOUTH, ctx)
+        dashed(3, 2, FACING_EAST, ctx)
+        roundaboutLeft(4, 2, FACING_NORTH, ctx)
+        crossRoad(4, 3, FACING_EAST, ctx)
+        teeRight(4, 4, FACING_SOUTH, ctx)
+        dashedHump(3, 4, FACING_EAST, ctx)
+        zigzag(2, 4, FACING_EAST, ctx)
+        rescueSurvivor(1, 4, FACING_EAST, ctx)
+        rescueZone(1, 3, FACING_EAST, ctx)
+        roundaboutAhead(1, 2, FACING_NORTH, ctx)
+        sharpTurnLeft(1, 1, FACING_NORTH, ctx)
+        teeLeft(0, 1, FACING_WEST, ctx)
+        end(0, 2, FACING_SOUTH, ctx)
+      },
+    )),
   )
 
 
