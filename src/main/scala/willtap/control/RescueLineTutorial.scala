@@ -35,6 +35,7 @@ object RescueLineTutorial {
       fieldSize= (tw * RescueLine.tileSize) -> (th * RescueLine.tileSize),
       r = LineTurtle(start._1 * RescueLine.tileSize + RescueLine.halfTile, start._2 * RescueLine.tileSize + RescueLine.halfTile) { r =>
         r.penDown = false
+        r.sensorLimit = 16
         if (inaccurate) applyStandardInaccuracy(r)
       },
       setup = c => {
@@ -61,7 +62,6 @@ object RescueLineTutorial {
   }
 
   def applyLargeInaccuracy(r:LineTurtle):Unit = {
-    r.sensorLimit = 16
     r.moveWobble = Random.nextDouble * 0.02
     r.moveWobbleBias = (Random.nextDouble - 0.5) * 0.0001
     r.turnInaccuracy = Random.nextDouble * 0.1
