@@ -2,13 +2,194 @@ package willtap.control
 
 import canvasland.{CanvasLand, LineTurtle, Turtle}
 import coderunner.JSCodable
-import com.wbillingsley.veautiful.html.{<, VHtmlComponent, ^}
+import com.wbillingsley.veautiful.DiffNode
+import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlDiffNode, ^, EventMethods}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
+import com.wbillingsley.wren.Orientation.{East, North}
+import com.wbillingsley.wren.{Circuit, Component, Constraint, ConstraintPropagator, Ground, Junction, LogicInput, NMOSSwitch, Terminal, VoltageSource, Wire}
+import org.scalajs.dom
+import org.scalajs.dom.{Element, Node}
 import willtap.Common
 
+import scala.scalajs.js
 import scala.util.Random
 
 object SensorsAndMotors {
+
+  case class PWM() extends VHtmlComponent {
+
+    private var input:Int = 0
+
+    private val canvasWidth = 510
+    private val canvasHeight = 155
+    private val low = 150
+    private val high = 5
+
+    private val canvas = <.canvas(^.attr("width") := canvasWidth, ^.attr("height") := canvasHeight)
+
+    private def paintCanvas() = for { c <- canvas.domNode } {
+      val ctx = c.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+      ctx.save()
+      ctx.setLineDash(js.Array(5d, 5d))
+
+      val avg = input / 255d * (high - low) + low
+      ctx.strokeStyle = "green"
+      ctx.beginPath()
+      ctx.moveTo(0, avg)
+      ctx.lineTo(canvasWidth, avg)
+      ctx.stroke()
+
+      ctx.strokeStyle = "blue"
+      ctx.beginPath()
+      ctx.moveTo(0, low)
+      ctx.lineTo(canvasWidth, low)
+      ctx.stroke()
+      ctx.strokeStyle = "red"
+      ctx.beginPath()
+      ctx.moveTo(0, high)
+      ctx.lineTo(canvasWidth, high)
+      ctx.stroke()
+      ctx.restore()
+      ctx.strokeStyle = "black"
+      ctx.beginPath()
+      if (input > 0) ctx.moveTo(0, high) else ctx.moveTo(0, low)
+      for { x <- 0 to canvasWidth } {
+        if (x % 255 < input) {
+          ctx.lineTo(x, high)
+        } else {
+          ctx.lineTo(x, low)
+        }
+      }
+      ctx.stroke()
+
+
+    }
+
+
+    override def render: DiffNode[Element, Node] = <.div(
+      <.div(canvas),
+      <.input(^.attr("type") := "range", ^.attr("min") := 0, ^.attr("max") := 255, ^.prop("value") := input.toString,
+        ^.on("input") ==> { e =>
+            try {
+              e.inputValue.foreach(d => input = d.toInt)
+              paintCanvas()
+              rerender()
+            } catch {
+              case x:Throwable => // ignore
+            }
+        }
+      ), <.span(input.toString)
+    )
+
+    override def afterAttach(): Unit = {
+      super.afterAttach()
+      paintCanvas()
+    }
+
+  }
+
+
+  class DCMotor(pos:(Int, Int)) extends Component {
+
+    val (x, y) = pos
+
+    val width = 100
+
+    val ta = new Terminal((x - width/2, y ), Some(0))
+    val tb = new Terminal((x + width/2, y ), Some(0))
+
+    override def terminals: Seq[Terminal] = Seq(ta, tb)
+
+    override def constraints: Seq[Constraint] = ta.constraints ++ tb.constraints
+
+    private def backArrow = SVG.path(^.attr("d") := "M 20 0 A 20 20 0 1 0 0 20 M -5 15 L 0 20 L -5 25")
+
+    private def forwardArrow = SVG.path(^.attr("d") := "M 20 0 A 20 -20 0 1 1 0 -20 M -5 -15 L 0 -20 L -5 -25")
+
+    private def coast = SVG.circle(^.attr("cx") := 0, ^.attr("cy") := 0, ^.attr("r") := 5)
+
+    private val vt = 1d
+
+    private def forward = (ta.potential - tb.potential).exists(_ > vt)
+    private def backward = (tb.potential - ta.potential).exists(_ > vt)
+
+    override def render: VHtmlDiffNode = SVG.g(^.cls := "wren-component logic-probe", ^.attr("transform") := s"translate($x, $y)",
+      SVG.rect(^.attr("x") := -(width/2), ^.attr("y") := "-20", ^.attr("width") := width, ^.attr("height") := 40),
+      SVG.circle(^.attr("cx") := 0, ^.attr("cy") := 0, ^.attr("r") := (width/2) - 10),
+      if (forward) forwardArrow else if (backward) backArrow else coast,
+    )
+  }
+
+  case class HBridge() extends VHtmlComponent {
+
+    implicit val wireCol = Wire.voltageColoring
+    implicit val nMosCol = NMOSSwitch.voltageColouring
+
+    val vdd = new VoltageSource(400 -> 175, North, Some(5d))
+    val gnd = new Ground(400, 340)
+
+    val a1:LogicInput = new LogicInput(100 ->50, East, name="S1", initial = Some(false))({ v => a2.value = v.map(!_); onUpdate() })
+    val b1:LogicInput = new LogicInput(300 ->50, East, name="S3", initial = Some(false))({ v => b2.value = v.map(!_); onUpdate() })
+    val a2:LogicInput = new LogicInput(100 ->300, East, name="S2", initial = Some(false))({ v => a1.value = v.map(!_); onUpdate() })
+    val b2:LogicInput = new LogicInput(300 ->300, East, name="S4", initial = Some(false))({ v => b1.value = v.map(!_); onUpdate() })
+
+
+    val ltop = new NMOSSwitch(150 -> 50)
+    val lbottom = new NMOSSwitch(150 -> 300)
+    val rtop = new NMOSSwitch(350 -> 50)
+    val rbottom = new NMOSSwitch(350 -> 300)
+
+    val ta = Junction(ltop.source.x -> 175)
+    val tb = Junction(rtop.source.x -> 175)
+
+    val m = new DCMotor(250 -> 175)
+
+    import Wire._
+    val wires:Seq[Wire] = Seq(
+      (a1.t -> ltop.gate).wire,
+      (b1.t -> rtop.gate).wire,
+      (a2.t -> lbottom.gate).wire,
+      (b2.t -> rbottom.gate).wire,
+      (ltop.source -> ta.terminal).wire,
+      (ta.terminal -> lbottom.drain).wire,
+      (ta.terminal -> m.ta).wire,
+      (m.tb -> tb.terminal).wire,
+      (rtop.source -> tb.terminal).wire,
+      (rbottom.drain -> tb.terminal).wire,
+      (lbottom.source -> rbottom.source).wire,
+      (rbottom.source -> gnd.terminal).wire,
+      (ltop.drain -> rtop.drain).wire,
+      (rtop.drain -> vdd.t2).wireVia(vdd.t2.x -> rtop.drain.y),
+      (gnd.terminal -> vdd.t1).wire,
+    )
+
+    val circuit = new Circuit(Seq(
+      a1, a2, b1, b2, ltop, lbottom, rtop, rbottom, vdd, gnd, m
+    ) ++ wires, 500, 400)
+    val propagator = new ConstraintPropagator(circuit.components.flatMap(_.constraints))
+    propagator.resolve()
+
+    override def render: DiffNode[Element, Node] = <.div(
+      <("style")(
+        """.wren-canvas {
+          |  font-size: 16px;
+          |}
+          |
+          |.wren-component {
+          |  fill: white;
+          |}
+          |""".stripMargin),
+      circuit
+    )
+
+    def onUpdate():Unit = {
+      propagator.clearCalculations()
+      propagator.resolve()
+      rerender()
+    }
+  }
 
   private val builder = new DeckBuilder()
     .markdownSlide(
@@ -267,13 +448,27 @@ object SensorsAndMotors {
         |So, robots need a *motor driver*
         |
         |""".stripMargin)
-    .markdownSlide(
-      """## H-Bridge motor drivers
-        |
-        | Still being written...
-        |
-        |
-        |""".stripMargin)
+    .veautifulSlide(<.div(
+      <.h2("H Bridge Motor Driver"),
+      Challenge.split(
+        Common.markdown(
+          """
+            |The motor driver takes our digital outputs and uses them to let us drive a DC motor in a forward or
+            |backward direction.
+            |
+            |This switches the motor between running *at full speed* forwards or backwards.
+            |
+            |To do speed control, we're going to need to add *pulse-width modulation*, where we pulse the output
+            |so it is being driven for a period in proportion to how fast we want the motor to run.
+            |
+            |""".stripMargin)
+      )(
+        <.h3("H Bridge"),
+        HBridge(),
+        <.h3("Pulse-width modulation"),
+        PWM()
+      )
+    ))
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 

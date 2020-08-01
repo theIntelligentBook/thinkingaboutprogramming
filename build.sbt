@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "com.github.wbillingsley.veautiful" %%% "veautiful" % "master-SNAPSHOT",
   "com.github.wbillingsley.veautiful" %%% "veautiful-templates" % "master-SNAPSHOT",
 	"com.github.wbillingsley.veautiful" %%% "scatter" % "master-SNAPSHOT",
-  "com.github.wbillingsley" % "lavamaze" % "master-SNAPSHOT" // Need to single-% as it's a top-level jitpack project
+  "com.github.wbillingsley" % "lavamaze" % "master-SNAPSHOT", // Need to single-% as it's a top-level jitpack project
+  "com.github.theintelligentbook" % "circuitsup" % "master-SNAPSHOT"
 )
 
 val deployScript = taskKey[Unit]("Copies the fullOptJS script to deployscripts/")
