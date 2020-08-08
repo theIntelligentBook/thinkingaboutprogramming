@@ -59,8 +59,13 @@ object Intro {
            |* [Tutorial: Rescue Line](${ChallengeRoute("rescueLine", 0, 0).path})  \t
            |  ...in which we get LineTurtle through some simple mazes and complete assignment 2.
            |
-           |* [Sensors and Motors](${DeckRoute("sensorsAndMotors", 0).path})
+           |* [Sensors and Motors](${DeckRoute("sensorsAndMotors", 0).path})  \t
            |  ...in which we take a little look at what small devices have available
+           |
+           |## 4. Little Data
+           |
+           |* [Passing Functions as Values](${DeckRoute("higherOrder", 0).path})  \t
+           |   ...in which we study Peter Rabbit
            |""".stripMargin
       )
     ),

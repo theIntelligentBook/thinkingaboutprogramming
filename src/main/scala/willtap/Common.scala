@@ -3,6 +3,7 @@ package willtap
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
 import willtap.control.{OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
+import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import willtap.typesTopic.{ObjectTypes, PrimitiveTypes}
 
@@ -98,6 +99,7 @@ object Common {
     "objectTypes" -> ObjectTypes.deck,
     "closedLoop" -> OpenAndClosedLoop.deck,
     "sensorsAndMotors" -> SensorsAndMotors.deck,
+    "higherOrder" -> HigherOrder.deck,
   )
 
   val challenges:Map[String, Challenge] = Map(
