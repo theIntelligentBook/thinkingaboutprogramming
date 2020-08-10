@@ -19,6 +19,36 @@ object HigherOrder {
         |
         |""".stripMargin).withClass("center middle")
     .markdownSlide(
+      """## Little Data
+        |
+        |Mostly, this is going to be a demonstration of a different style of programming that's used in data. But
+        |there are three methods to know about that we'll meet on arrays:
+        |
+        |* `filter(f)` - to produce a new array containing only *some* of the elements of the original array.
+        |
+        |  ```js
+        |  [1, 2, 3, 4, 5].filter((i) => i % 2 == 0) // [2, 4]
+        |  ```
+        |
+        |* `map(f)` - to produce a new array of elements that have been transformed somehow
+        |
+        |  ```js
+        |  [1, 2, 3, 4, 5].map((i) => i * 2)) // [2, 4, 6, 8, 10]
+        |  ```
+        |
+        |* `reduce(f)` - to progressively combine elements from an array into a single result.
+        |
+        |  ```js
+        |  [1, 2, 3, 4, 5].reduce((a, b) => a + b, 0) // 15
+        |  ```
+        |
+        |Each of these takes a function as an argument - the function they will apply to your array.
+        |
+        |We'll do the code for this in CodeSandbox. The finished version is available here:
+        |
+        |[https://codesandbox.io/s/little-data-peter-rabbit-demo1-r5nym](https://codesandbox.io/s/little-data-peter-rabbit-demo1-r5nym)
+        |""".stripMargin)
+    .markdownSlide(
       """## Functions as values
         |
         |So far, when we've passed a function as a parameter or set it as a value, it has typically been as an
@@ -70,7 +100,7 @@ object HigherOrder {
         |
         |Suppose we'd like to do some processing where we find out what different paragraphs are about.
         |
-        |What we're going to try to produce is a *word vector* for each paragraph, showing which words occur.
+        |What we're going to try to produce is a *vector* for each paragraph, showing which words occur.
         |Then, if we find paragraphs that contain the same words as each other, we're going to consider them as being
         |related. (e.g., all the paragraphs mentioning Mr McGregor)
         |
@@ -80,7 +110,6 @@ object HigherOrder {
         |
         |```js
         |let peterRabbit = `
-        |
         |Once upon a time there were four little Rabbits, and their names
         |were--
         |
@@ -387,10 +416,372 @@ object HigherOrder {
         |
         |would produce
         |
-        |> now,my,dears,said,old,mrs,rabbit,one,morning,you,may,go,into,the,fields,or,down,the,lane,but,don,t,go,into,mr,mcgregor,s,garden,your,father,had,an,accident,there,he,was,put,in,a,pie,by,mrs,mcgregor
+        |```
+        |now,my,dears,said,old,mrs,rabbit,one,morning,you,may,go,into,the,fields,or,down,the,lane,but,don,t,go,into,mr,mcgregor,s,garden,your,father,had,an,accident,there,he,was,put,in,a,pie,by,mrs,mcgregor
+        |```
         |
         |""".stripMargin)
-
+    .markdownSlide(
+      """## Emitting words
+        |
+        |At the moment, our words are in a flat array in the order they appear. Some words might be repeated
+        |(e.g. "mcgregor" appears twice).
+        |
+        |To make the bags of words from each paragraph more comparable, let's turn them into objects, where the key is
+        |the word appears and the value is how often it appears. e.g.,
+        |
+        |```js
+        |{ "now": 1, "mcgregor": 2 ... }
+        |```
+        |
+        |To start, let's just turn each word in the array to a `{ word: 1 }` object. Then we'll have them in a format
+        |we can combine. This function can convert a word into an object
+        |
+        |```js
+        |function wordToObj(w) {
+        |   let obj = {}
+        |   obj[w] = 1
+        |   return obj;
+        |}
+        |```
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## An array of word objects
+        |
+        |Back inside our vector function, let's call our `wordToObj` function.
+        |
+        |```js
+        |function wordVector(paragraph) {
+        |  let words = paragraph.split(/\W/)
+        |    .filter((s) => s.length > 0)
+        |    .map((s) => s.toLowerCase())
+        |    .map((w) => wordToObj(w))
+        |
+        |  return words
+        |}
+        |```
+        |
+        |This now gives us:
+        |
+        |```js
+        |[{"now":1},{"my":1},{"dears":1},{"said":1},{"old":1},{"mrs":1},{"rabbit":1},{"one":1},{"morning":1},{"you":1},{"may":1},{"go":1},{"into":1},{"the":1},{"fields":1},{"or":1},{"down":1},{"the":1},{"lane":1},{"but":1},{"don":1},{"t":1},{"go":1},{"into":1},{"mr":1},{"mcgregor":1},{"s":1},{"garden":1},{"your":1},{"father":1},{"had":1},{"an":1},{"accident":1},{"there":1},{"he":1},{"was":1},{"put":1},{"in":1},{"a":1},{"pie":1},{"by":1},{"mrs":1},{"mcgregor":1}]
+        |```
+        |
+        |Our next job is to *reduce* that array of word counts into a single object containing the counts of the words.
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Reduce
+        |
+        |`Array.reduce` is a harder function to get your head around. You give it a function that takes two elements
+        |from an array and combines them into one.
+        |
+        |It then keeps calling your function, combining elements, then combining the results, then combining the
+        |results of the results, until you finish up with one object.
+        |
+        |e.g.
+        |
+        |```js
+        |let myArr = [1, 2, 3, 4, 5, 6, 7]
+        |let total = myArr.reduce((a, b) => { return a + b }, 0) // 28
+        |```
+        |""".stripMargin)
+    .markdownSlide(
+      """## Adding wordcounts
+        |
+        |We're going to need a function that can combine two wordCount objects. This should do it:
+        |
+        |```js
+        |function combine(a, b) {
+        |  let result = {}
+        |
+        |  // Clone a
+        |  for (key in a) {
+        |    result[key] = a[key]
+        |  }
+        |
+        |  // Add elements from b that coincide; just copy elements from b that don't
+        |  for (key in b) {
+        |    if (result[key] === undefined) {
+        |      result[key] = b[key]
+        |    } else {
+        |      result[key] = result[key] + b[key]
+        |    }
+        |  }
+        |
+        |  return result
+        |}
+        |```
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Spread operator as an easy clone
+        |
+        |Since 2018, JavaScript has had a *spread* operator that can make our clone of a shorter.
+        |
+        |```js
+        |function combine(a, b) {
+        |  let result = {}
+        |
+        |  // Clone a using the spread operator
+        |  let result = { ...a }
+        |
+        |  // Add elements from b that coincide; just copy elements from b that don't
+        |  for (key in b) {
+        |    if (result[key] === undefined) {
+        |      result[key] = b[key]
+        |    } else {
+        |      result[key] = result[key] + b[key]
+        |    }
+        |  }
+        |
+        |  return result
+        |}
+        |```
+        |""".stripMargin)
+    .markdownSlide(
+      """## Updating our vector function
+        |
+        |We can now *reduce* our array of word objects using our *combine* function
+        |
+        |```js
+        |function wordVector(paragraph) {
+        |  let words = paragraph.split(/\W/)
+        |    .filter((s) => s.length > 0)
+        |    .map((s) => s.toLowerCase())
+        |    .map((w) => wordToObj(w))
+        |    .reduce((a, b) => combine(a, b), {})
+        |
+        |  return words
+        |}
+        |```
+        |
+        |This now gives us:
+        |
+        |```js
+        |{"now":1,"my":1,"dears":1,"said":1,"old":1,"mrs":2,"rabbit":1,"one":1,"morning":1,"you":1,"may":1,"go":2,"into":2,"the":2,"fields":1,"or":1,"down":1,"lane":1,"but":1,"don":1,"mr":1,"mcgregor":2,"garden":1,"your":1,"father":1,"had":1,"an":1,"accident":1,"there":1,"he":1,"was":1,"put":1,"in":1,"pie":1,"by":1}NaN0
+        |```
+        |""".stripMargin)
+    .markdownSlide(
+      """## How much do two paragraphs have in common?
+        |
+        |Let's just decide that the commonality between two paragraphs is the proportion of their words that they share.
+        |i.e.,
+        |
+        |> (number of words they share) / (total number of words they have)
+        |
+        |or
+        |
+        |> (size of the intersection of the vectors) / (size of the union of the vectors)
+        |
+        |We can already get the *union* of their words just by calling `combine(a, b)` that we defined earlier. But
+        |we're going to need to write `intersection(a, b)`.
+        |
+        |We're also going to need a function that can add up the size of one of our word vectors.
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Intersection of two vectors
+        |
+        |We want to return a vector of words, where a word is included only if it's in both vectors. If one contains
+        |a word (e.g., `mcgregor`) twice but the other only contains it once, let's just count it once.
+        |
+        |```js
+        |function intersection(a, b) {
+        |  let result = { }
+        |
+        |  for (let key in a) {
+        |    if (b[key] !== undefined) {
+        |      if (b[key] < a[key]) {
+        |        result[key] = b[key]
+        |      } else {
+        |        result[key] = a[key]
+        |      }
+        |    }
+        |  }
+        |
+        |  return result
+        |}
+        |```
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Size of a vectors
+        |
+        |Our word vectors are in the format
+        |
+        |```js
+        |{ hello: 1, there: 1, foo: 2 } // Hello there, Foo Foo!
+        |```
+        |
+        |To add up the words, we just add up the numbers
+        |
+        |```js
+        |function size(obj) {
+        |  let sum = 0
+        |  for (let key in obj) {
+        |    sum = sum + obj[key]
+        |  }
+        |  return sum
+        |}
+        |```
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Commonality
+        |
+        |At last, we can define a measure of the commonality between two paragraphs...
+        |
+        |```js
+        |// What proportion of words do two paragraphs have in common?
+        |function commonality(a, b) {
+        |  let top = size(intersection(a, b))
+        |  if (top === 0) {
+        |    // This solves the issue of comparing two empty paragraphs. 0/0 is NaN, but we return 0
+        |    return 0
+        |  } else {
+        |    return top / size(combine(a, b))
+        |  }
+        |}
+        |```
+        |""".stripMargin)
+    .markdownSlide(
+      """## Let's have a way of visualising this
+        |
+        |Let's just use the browser's API to add the paragraphs to the screen, and colour them according to how
+        |relevant they are to a reference paragraph
+        |
+        |```js
+        |let compare = vectors[3] // Colour everything in comparison to para 3
+        |let app = document.getElementById("app")
+        |for (let i in paragraphs) {
+        |  let vector = vectors[i]
+        |  let para = paragraphs[i]
+        |
+        |  let p = document.createElement("p")
+        |
+        |  let c = commonality(compare, vector)
+        |  let colour = `rgba(0, 255, 0, ${c})`
+        |  p.style.backgroundColor = colour
+        |
+        |  p.innerHTML = para
+        |    + JSON.stringify(intersection(compare, vector))
+        |    + c
+        |
+        |  app.append(p)
+        |}
+        |```
+        |
+        |The `commonality` measure is a number between `0` and `1`. So, I've set the background to be green, but it's
+        |opaqueness (how much green will actually show) is in proportion to the commonality number. That's the `a` in
+        |`rgba` - the colour's *alpha* (opacity) value.
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## A problem
+        |
+        |There's a problem, though.
+        |
+        |* The most common pagagraphs in our document are all the ones that say "[Illustration]".
+        |
+        |* There are a lot of words like *"a"*, *"the"*, *"of"*, etc., that are counted as words in common but are so
+        |  common they'll just skew our results to how many "the"s were in the paragraphs.
+        |
+        |We're going to need to introduce a *stop-list* of words we don't want to consider. Let's put it in an array
+        |in case we want to tune it
+        |
+        |```js
+        |let stopList = [
+        |  "a", "and", "the", "on", "of", "in", "out", "up", "down", "by", "to", "into", "there", "with", "upon",
+        |  "am", "be", "is", "was", "were", "for", "at", "after", "no", "or", "but", "had",
+        |  "he", "she", "their", "her", "his", "him", "her", "they", "them", "who", "it", "an",
+        |  "very", "then", "quite", "that", "so",
+        |  "illustration", "mr", "presently", "time",
+        |]
+        |```
+        |""".stripMargin)
+    .markdownSlide(
+      """## Filtering out the Stop List
+        |
+        |To remove these words, we just need to insert an extra `filter` stage into our word vector function
+        |
+        |```js
+        |function words(paragraph) {
+        |  let words = paragraph
+        |    .split(/\W/)
+        |    .filter((s) => s.length > 1)
+        |    .map((s) => s.toLowerCase())
+        |    .filter((s) => stopList.indexOf(s) < 0)
+        |    .map((w) => wordToObj(w))
+        |    .reduce(combine, {})
+        |
+        |  return words;
+        |}
+        |```
+        |
+        |`stopList.indexOf(s)` will return the word's position in the stop-list if it is present, or `-1` if it isn't.
+        |So, to filter out the stop-list words, we accept only the ones that had a negative result (not present).
+        |""".stripMargin)
+    .markdownSlide(
+      """## The most relevant paragraph?
+        |
+        |Let's see if we can find the paragraph that has the most total relevance. Let's consider a pagraph's *total
+        |relevance* as the sum of its relevance to each paragraph.
+        |
+        |I'm going to write this in a *functional programming* style... Don't worry if this looks alien to you at the
+        |moment, the point is that sometimes this style can be very concise / dense.
+        |
+        |```js
+        |function totalRelevance(left) {
+        |  return vectors.map((v) => commonality(left, v)).reduce((a, b) => a + b)
+        |}
+        |```
+        |
+        |If we clone the vector array, and then sort it by totalRelevance, we can get a list of the most
+        |relevant paragraphs overall
+        |```js
+        |let byRelevance = vectors.slice().sort((a, b) => totalRelevance(b) - totalRelevance(a))
+        |```
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Our results
+        |
+        |Probably unsurprisingly, the most relevant paragraphs look like being the ones that contain Mr McGregor and Peter
+        |
+        |With a slight re-ordering, the top 3 tell most of the story:
+        |
+        |> But Peter, who was very naughty, ran straight away to Mr. McGregor's garden, and squeezed under the gate!
+        |
+        |> Presently Peter sneezed--'Kertyschoo!' Mr. McGregor was after him in no time.
+        |
+        |> Mr. McGregor caught sight of him at the corner, but Peter did not care. He slipped underneath the gate, and was safe at last in the wood outside the garden.
+        |
+        |""".stripMargin)
+    .markdownSlide(
+      """## Map-Reduce
+        |
+        |If we look at our processing function, it is mostly made up of `filter`, `map`, and `reduce` calls
+        |
+        |```js
+        |function words(paragraph) {
+        |  let words = paragraph
+        |    .split(/\W/)
+        |    .filter((s) => s.length > 1)
+        |    .map((s) => s.toLowerCase())
+        |    .filter((s) => stopList.indexOf(s) < 0)
+        |    .map((w) => wordToObj(w))
+        |    .reduce(combine, {})
+        |
+        |  return words;
+        |}
+        |```
+        |
+        |Google's infrastructure for big data processing (around 2006) was called `MapReduce` becasue it was designed
+        |to distribute this kind of processing across huge data servers around the world so it could run on data that's
+        |in different places.
+        |""".stripMargin)
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 
