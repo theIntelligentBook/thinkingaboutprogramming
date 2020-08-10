@@ -21,8 +21,8 @@ object HigherOrder {
     .markdownSlide(
       """## Little Data
         |
-        |Mostly, this is going to be a demonstration of a different style of programming that's used in data. But
-        |there are three methods to know about that we'll meet on arrays:
+        |Mostly, this is going to be a demonstration of a different style of programming that's used in big data processing.
+        |But there are three methods to know about that we'll meet on arrays:
         |
         |* `filter(f)` - to produce a new array containing only *some* of the elements of the original array.
         |
