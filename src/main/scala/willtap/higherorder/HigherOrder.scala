@@ -331,7 +331,12 @@ object HigherOrder {
         |}
         |```
         |
-        |I'll use `paragraphs[4]` as an example
+        |I'll use `paragraphs[3]` as an example
+        |
+        |> 'Now my dears,' said old Mrs. Rabbit one morning, 'you may go into
+        |> the fields or down the lane, but don't go into Mr. McGregor's garden:
+        |> your Father had an accident there; he was put in a pie by Mrs.
+        |> McGregor.'
         |""".stripMargin)
     .markdownSlide(
       """## Splitting the sentences
@@ -350,7 +355,9 @@ object HigherOrder {
         |
         |Splits into this array:
         |
-        |> ,Now,my,dears,,,said,old,Mrs,,Rabbit,one,morning,,,you,may,go,into,the,fields,or,down,the,lane,,but,don,t,go,into,Mr,,McGregor,s,garden,,your,Father,had,an,accident,there,,he,was,put,in,a,pie,by,Mrs,,McGregor,,
+        |```js
+        |["","Now","my","dears","","","said","old","Mrs","","Rabbit","one","morning","","","you","may","go","into","the","fields","or","down","the","lane","","but","don","t","go","into","Mr","","McGregor","s","garden","","your","Father","had","an","accident","there","","he","was","put","in","a","pie","by","Mrs","","McGregor","",""]
+        |```
         |
         |Hmm, we've got a lot of empty strings, from where two non-word character followed each other. e.g. the punctionation in *Now my dears, said old Mrs. Rabbit"
         |""".stripMargin)
@@ -374,7 +381,9 @@ object HigherOrder {
         |
         |Split and filtered to individual words gives us:
         |
-        |> Now,my,dears,said,old,Mrs,Rabbit,one,morning,you,may,go,into,the,fields,or,down,the,lane,but,don,t,go,into,Mr,McGregor,s,garden,your,Father,had,an,accident,there,he,was,put,in,a,pie,by,Mrs,McGregor
+        |```js
+        |["Now","my","dears","said","old","Mrs","Rabbit","one","morning","you","may","go","into","the","fields","or","down","the","lane","but","don","t","go","into","Mr","McGregor","s","garden","your","Father","had","an","accident","there","he","was","put","in","a","pie","by","Mrs","McGregor"]
+        |```
         |
         |We've got words with different capitalisations, but we'd probably like "Now" and "now" to be treated the same. Let's turn every word lowercase.
         |""".stripMargin)
@@ -416,8 +425,8 @@ object HigherOrder {
         |
         |would produce
         |
-        |```
-        |now,my,dears,said,old,mrs,rabbit,one,morning,you,may,go,into,the,fields,or,down,the,lane,but,don,t,go,into,mr,mcgregor,s,garden,your,father,had,an,accident,there,he,was,put,in,a,pie,by,mrs,mcgregor
+        |```js
+        |["now","my","dears","said","old","mrs","rabbit","one","morning","you","may","go","into","the","fields","or","down","the","lane","but","don","t","go","into","mr","mcgregor","s","garden","your","father","had","an","accident","there","he","was","put","in","a","pie","by","mrs","mcgregor"]
         |```
         |
         |""".stripMargin)
@@ -560,7 +569,7 @@ object HigherOrder {
         |This now gives us:
         |
         |```js
-        |{"now":1,"my":1,"dears":1,"said":1,"old":1,"mrs":2,"rabbit":1,"one":1,"morning":1,"you":1,"may":1,"go":2,"into":2,"the":2,"fields":1,"or":1,"down":1,"lane":1,"but":1,"don":1,"mr":1,"mcgregor":2,"garden":1,"your":1,"father":1,"had":1,"an":1,"accident":1,"there":1,"he":1,"was":1,"put":1,"in":1,"pie":1,"by":1}NaN0
+        |{"now":1,"my":1,"dears":1,"said":1,"old":1,"mrs":2,"rabbit":1,"one":1,"morning":1,"you":1,"may":1,"go":2,"into":2,"the":2,"fields":1,"or":1,"down":1,"lane":1,"but":1,"don":1,"mr":1,"mcgregor":2,"garden":1,"your":1,"father":1,"had":1,"an":1,"accident":1,"there":1,"he":1,"was":1,"put":1,"in":1,"pie":1,"by":1}
         |```
         |""".stripMargin)
     .markdownSlide(
@@ -661,6 +670,7 @@ object HigherOrder {
         |
         |  let p = document.createElement("p")
         |
+        |  // Make the background green, with an opacity (alpha) depending on the commonality
         |  let c = commonality(compare, vector)
         |  let colour = `rgba(0, 255, 0, ${c})`
         |  p.style.backgroundColor = colour
@@ -672,10 +682,6 @@ object HigherOrder {
         |  app.append(p)
         |}
         |```
-        |
-        |The `commonality` measure is a number between `0` and `1`. So, I've set the background to be green, but it's
-        |opaqueness (how much green will actually show) is in proportion to the commonality number. That's the `a` in
-        |`rgba` - the colour's *alpha* (opacity) value.
         |
         |""".stripMargin)
     .markdownSlide(
