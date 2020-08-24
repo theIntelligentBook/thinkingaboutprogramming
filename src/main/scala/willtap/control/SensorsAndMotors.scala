@@ -448,27 +448,29 @@ object SensorsAndMotors {
         |So, robots need a *motor driver*
         |
         |""".stripMargin)
-    .veautifulSlide(<.div(
-      <.h2("H Bridge Motor Driver"),
-      Challenge.split(
-        Common.markdown(
-          """
-            |The motor driver takes our digital outputs and uses them to let us drive a DC motor in a forward or
-            |backward direction.
-            |
-            |This switches the motor between running *at full speed* forwards or backwards.
-            |
-            |To do speed control, we're going to need to add *pulse-width modulation*, where we pulse the output
-            |so it is being driven for a period in proportion to how fast we want the motor to run.
-            |
-            |""".stripMargin)
-      )(
-        <.h3("H Bridge"),
-        HBridge(),
-        <.h3("Pulse-width modulation"),
-        PWM()
+    .veautifulSlide(
+      <.div(
+        <.h2("H Bridge Motor Driver"),
+        Challenge.split(
+          Common.markdown(
+            """
+              |The motor driver takes our digital outputs and uses them to let us drive a DC motor in a forward or
+              |backward direction.
+              |
+              |This switches the motor between running *at full speed* forwards or backwards.
+              |
+              |To do speed control, we're going to need to add *pulse-width modulation*, where we pulse the output
+              |so it is being driven for a period in proportion to how fast we want the motor to run.
+              |
+              |""".stripMargin)
+        )(
+          <.h3("H Bridge"),
+          HBridge(),
+          <.h3("Pulse-width modulation"),
+          PWM()
+        )
       )
-    ))
+    )
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 

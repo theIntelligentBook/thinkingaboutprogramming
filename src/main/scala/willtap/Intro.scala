@@ -38,7 +38,7 @@ object Intro {
            |* [Tutorial: Turtle Graphics](${ChallengeRoute("turtleGraphics", 0, 0).path})  \t
            |  ...in which we meet a turtle and draw some shapes
            |
-           |## 2. Types
+           |## 2 & 3. Types
            |
            |* [Types](${DeckRoute("types", 0).path})  \t
            |  ...in which we consider what operations mean when applied to different things
@@ -46,12 +46,10 @@ object Intro {
            |* [Tutorial: Welcome to the Lava Maze](${ChallengeRoute("lavaMaze", 0, 0).path})  \t
            |  ...in which we get Snobot through some simple mazes and complete assignment 1.
            |
-           |## 3. Objects and Events
-           |
            |* [Reference Types](${DeckRoute("objectTypes", 0).path})  \t
            |  ...in which we consider whether a copy of you would be you
            |
-           |## 4. Robots and Control
+           |## 4 & 5. Robots and Control
            |
            |* [Open and Closed Loop Control](${DeckRoute("closedLoop", 0).path})  \t
            |  ...in which we start to move from dead reckoning to using feedback
@@ -62,10 +60,18 @@ object Intro {
            |* [Sensors and Motors](${DeckRoute("sensorsAndMotors", 0).path})  \t
            |  ...in which we take a little look at what small devices have available
            |
-           |## 4. Little Data
+           |## 6. Little Data
            |
            |* [Passing Functions as Values](${DeckRoute("higherOrder", 0).path})  \t
            |   ...in which we study Peter Rabbit
+           |
+           |## 7. Markup Langauges
+           |
+           |* [Markup Languages](${DeckRoute("markupLanguages", 0).path})  \t
+           |  ...in which we consider
+           |
+           |* [Tutorial: MicroRat](${ChallengeRoute("microRat", 0, 0).path})  \t
+           |  ...in which we get a ball-like robot through a physical maze and complete assignment 3.
            |""".stripMargin
       )
     ),

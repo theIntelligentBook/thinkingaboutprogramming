@@ -2,9 +2,10 @@ package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
-import willtap.control.{OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
+import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
 import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
+import willtap.markup.MarkupLanguages
 import willtap.typesTopic.{ObjectTypes, PrimitiveTypes}
 
 import scala.collection.mutable
@@ -100,12 +101,14 @@ object Common {
     "closedLoop" -> OpenAndClosedLoop.deck,
     "sensorsAndMotors" -> SensorsAndMotors.deck,
     "higherOrder" -> HigherOrder.deck,
+    "markupLanguages" -> MarkupLanguages.deck,
   )
 
   val challenges:Map[String, Challenge] = Map(
     "turtleGraphics" -> TurtleTutorial.challenge,
     "lavaMaze" -> SnobotTutorial.challenge,
     "rescueLine" -> RescueLineTutorial.challenge,
+    "microRat" -> MicroRatTutorial.challenge
   )
 
   def showDeck(s:String, p:Int):VHtmlNode = {
