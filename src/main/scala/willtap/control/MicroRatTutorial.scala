@@ -229,8 +229,171 @@ object MicroRatTutorial {
            |
            |""".stripMargin),
         () => VNodeStage.card(
-          JellyFlood()
+          JellyFlood(w=10, h=10, goalX=5, goalY=5, mazeString = Some(
+            """..........
+              |.###..###.
+              |.#......#.
+              |.#.######.
+              |.#.#......
+              |.#....#...
+              |.######.#.
+              |.#......#.
+              |.###..###.
+              |..........""".stripMargin))
         )
+      ),
+      VNodeStage.twoColumn("Mapping")(() => Common.markdown(
+        s"""
+           |To begin with, we assume the entire map is passable, and try to follow the fastest route to the middle.
+           |
+           |""".stripMargin),
+        () => VNodeStage.card(
+          JellyFlood(w=10, h=10, goalX=5, goalY=5, mazeString = Some(
+            """..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........""".stripMargin))
+        )
+      ),
+      VNodeStage.twoColumn("Mapping")(() => Common.markdown(
+        s"""
+           |Whenever we bump into a wall, we remember it's a wall and re-run the flood.
+           |
+           |""".stripMargin),
+        () => VNodeStage.card(
+          JellyFlood(w=10, h=10, goalX=5, goalY=5, mazeString = Some(
+            """..........
+              |.#........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........
+              |..........""".stripMargin))
+        )
+      ),
+      VNodeStage.twoColumn("Mapping")(() => Common.markdown(
+        s"""
+           |After a while, just from bumping into walls, we discover more of the map.
+           |
+           |So, to implement it you're going to need *two 2-dimensional arrays*:
+           |
+           |* One to hold the map (as you know it so far)
+           |* One to hold the estimated distances from the goal
+           |
+           |You can initialise an empty two-dimensional array like this:
+           |
+           |```
+           |let grid = []
+           |for (let y = 0; y < 10; y++) {
+           |  let row = []
+           |  for (let x = 0; x < 10; x++) {
+           |    row[x] = true
+           |  }
+           |  grid[y] = row
+           |}
+           |```
+           |
+           |That should give you:
+           |
+           |```js
+           |[
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |  [true, true, true, true, true, true, true, true, true, true],
+           |]
+           |```
+           |
+           |Whenever you bump into a wall, turn that grid entry false, and re-run the jelly flood.
+           |""".stripMargin),
+        () => VNodeStage.card(
+          JellyFlood(w=10, h=10, goalX=5, goalY=5, mazeString = Some(
+            """..........
+              |.#........
+              |.#........
+              |.#........
+              |.#........
+              |.#........
+              |.######...
+              |.#........
+              |.###......
+              |..........""".stripMargin))
+        )
+      ),
+      VNodeStage.twoColumn("Routefinding")(() => Common.markdown(
+        s"""The jelly flood needs a grid of numbers.
+           |
+           |Start by assuming everything is *very far* from the goal. Say, set everything in the distance grid to 999
+           |
+           |Then, what we're going to do is a little recursion. I'm going to give you the algorithm; you write it in
+           |code:
+           |
+           |Let's call the function `flood`, and let's say it takes `x`, `y`, and `d` as parameters. `x` and `y` are
+           |the coordinates of a square, and `d` is the distance the jelly has reached.
+           |
+           |1. If x and y are inside the grid (between 0 and 9)...
+           |2. ... and the entry in the map is floor (true) ...
+           |3. ... and the entry in the distance grid is *larger than* d (i.e., the jelly has not already reached this square)...
+           |3. set the entry in the grid to d
+           |4. and call `flood` for the four neighbouring squares, using `d+1` as the distance parameter
+           |   (i.e. make the jelly flow to them next, so set their distance one square higher)
+           |
+           |You start the flood by calling `calc` on the goal square, with a distance of `0`.
+           |
+           |I recommend you test that in a JavaScript console, just by hard-coding a map array and a distance array,
+           |and running your function.
+           |
+           |It should finish quickly. If it doesn't you might have an "infinite recursion".
+           |e.g. if you forget to check the distance is larger than d, then it'll look at the neighbour, but then
+           |come back because this square is one of its neighbour's neighbours, and then it'll go back to the neighbour,
+           |and then it'll come back... and so on.
+           |
+           |It should recursively flood the whole grid, and you'll then have a map of how far each square is from the
+           |goal.
+           |""".stripMargin),
+        () => <.div()
+      ),
+      VNodeStage.twoColumn("Putting it all together")(() => Common.markdown(
+        s"""This has hopefully given you the parts, now you just have to put them together.
+           |
+           |This tutorial's given you:
+           |
+           |* A function for turning to face a particular direction
+           |* A function for turning to a square and moving to it
+           |* A sensor for if you've hit a wall
+           |* A function for backing off slightly if you've hit a wall (so you're not stuck on the wall)
+           |* A grid of which tiles are floor or wall (start by guessing it's all floor)
+           |* A way of working out a grid of distances to any square in the maze, by flood-fill
+           |
+           |Bumper needs to:
+           |
+           |* Start exploring its way to the middle
+           |* Return to the start square
+           |* Then follow the fastest path it found back to the middle
+           |
+           |Remember, the tiles are 64px by 64px.
+           |
+           |So, the middle of any tile is at co-ordinate (x * 64 + 32, y * 64 + 32)
+           |
+           |If you want to go from a coordinate to an index into an array of tiles, `Math.floor(x / 64)` should give
+           |you the index of the tile you're in
+           |""".stripMargin),
+        () => <.div()
       ),
     )),
     Level(name = "ASSIGNMENT", stages = Seq(

@@ -6,13 +6,27 @@ import org.scalajs.dom.{Element, Node}
 
 import scala.collection.mutable
 
-case class JellyFlood() extends VHtmlComponent {
+case class JellyFlood(w:Int=8, h:Int=8, goalX:Int = 7, goalY:Int = 7, mazeString:Option[String] = None) extends VHtmlComponent {
 
-  val w = 8
-  val h = 8
   val maze = mutable.Map.empty[(Int, Int), Boolean]
   val distance = mutable.Map.empty[(Int, Int), Int]
   var tick = 0
+
+  def setSquare(x:Int, y:Int, c:Char):Unit = c match {
+    case '.' => maze((x, y)) = true
+    case '#' => maze((x, y)) = false
+    case _ => // do nothing
+  }
+
+  def loadFromString(s:String) = {
+    for {
+      (line, y) <- s.linesIterator.zipWithIndex if y < h
+      (char, x) <- line.zipWithIndex if x < w
+    } {
+      setSquare(x, y, char)
+    }
+  }
+
 
   private def check(p:(Int, Int), dist:Int):Unit = {
     distance(p) = dist
@@ -30,17 +44,22 @@ case class JellyFlood() extends VHtmlComponent {
     tick = 0
     maze.clear()
     distance.clear()
-    for { x <- 0 to 1; y <- 0 to 1 } {
-      maze((x,y)) = true
-      maze((w - x - 1, h - y - 1)) = true
+    mazeString match {
+      case Some(s) =>
+        loadFromString(s)
+      case _ =>
+        for { x <- 0 to 1; y <- 0 to 1 } {
+          maze((x,y)) = true
+          maze((w - x - 1, h - y - 1)) = true
+        }
+        for { i <- 0 until 8 } {
+          maze(4 -> i) = true
+          maze(6 -> i) = true
+          maze(i -> 4) = true
+          maze(i -> 1) = true
+        }
     }
-    for { i <- 0 until 8 } {
-      maze(4 -> i) = true
-      maze(6 -> i) = true
-      maze(i -> 4) = true
-      maze(i -> 1) = true
-    }
-    check((w - 1, h - 1), 0)
+    check((goalX, goalY), 0)
   }
 
   reset()

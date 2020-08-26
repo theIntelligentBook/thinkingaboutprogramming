@@ -71,7 +71,7 @@ video.scatter-video {
 
 .jelly-grid .jelly-row {
     display: grid;
-    grid-template-columns: repeat(8, 60px);
+    grid-template-columns: repeat(auto-fit, 60px);
 }
 
 .jelly-cell .floor {
