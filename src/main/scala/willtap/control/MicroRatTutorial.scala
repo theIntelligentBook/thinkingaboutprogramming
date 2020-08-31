@@ -163,9 +163,7 @@ object MicroRatTutorial {
       )
     )),
     Level(name = "Turning Bumper", stages = Seq(
-      MarkdownStage(() =>
-        """## Video to come...
-          |""".stripMargin),
+      YouTubeStage("mnhsIcB-WO4"),
       mdTask(
         """Now it's your turn. Try implementing the turn function. Then see what angles you need to turn it to to
           |hit the various wall blocks. You might find they're a little far away - Bumper's turn won't be totally
@@ -188,9 +186,7 @@ object MicroRatTutorial {
       )
     )),
     Level(name = "Moving Bumper", stages = Seq(
-      MarkdownStage(() =>
-        """## Video to come...
-          |""".stripMargin),
+      YouTubeStage("2mNgVdMqPo0"),
       mdTask(
         """Your move this time. Implement the move function, and see if you can steer bumper through this fixed maze.
           |
@@ -324,15 +320,15 @@ object MicroRatTutorial {
         () => VNodeStage.card(
           JellyFlood(w=10, h=10, goalX=5, goalY=5, mazeString = Some(
             """..........
-              |.#........
-              |.#........
-              |.#........
-              |.#........
-              |.#........
-              |.######...
-              |.#........
-              |.###......
-              |..........""".stripMargin))
+              |.###.###..
+              |..#...#..#
+              |#.#.##.#..
+              |....#...#.
+              |##.##.#.#.
+              |....###.#.
+              |.####.....
+              |......####
+              |.###.....#""".stripMargin))
         )
       ),
       VNodeStage.twoColumn("Routefinding")(() => Common.markdown(
@@ -410,9 +406,78 @@ object MicroRatTutorial {
            |
            |There are a few maps for you to try your program on. You should use the same program for Bumper, we've just
            |given you a few different mazes to try it out on.
+           |
+           |Note, though, that the score *isn't* dependent on how *many* mazes you can solve, it's based on how your
+           |robot performs in one maze. (It picks up points for moving, turning corners, finding its way to the middle,
+           |etc.) We just don't tell you which one we'll try it out in.
+           |
+           |**One more thing:** You're going to need to know how Bumper can find out where the goal is. The *pixel*
+           |coordinates of the goal can be found with `getGoalX()` and `getGoalY()`, but you just need to get Bumper
+           |into the right tile.
+           |
+           |The *tile* index of that can be found with
+           |
+           |```
+           |let goalTileX = Math.floor(getGoalX() / 64)
+           |let goalTileY = Math.floor(getGoalY() / 64)
+           |```
+           |
+           |(Take the pixel coordinates, divide by the fact tiles are 64 pixels wide, and round down because we were
+           |given the coordinate of the middle of the square.)
+           |
+           |Or, shortcut: it's always in tile (5, 5)
            |""".stripMargin),
         () => <.div()
       ),
+      mdTask(
+        """## Map 1
+          |
+          |A test maze for you to try your program on.
+          |""".stripMargin,
+        """..........
+          |.###..###.
+          |.#......#.
+          |.#.####.#.
+          |...#......
+          |......#...
+          |.#.####.#.
+          |.#......#.
+          |.###..###.
+          |..........
+          |""".stripMargin
+      ),
+      mdTask(
+        """## Map 2
+          |
+          |A test maze for you to try your program on.
+          |""".stripMargin,
+        """..........
+          |.###.###..
+          |..#...#..#
+          |#.#.##.#..
+          |....#...#.
+          |##.##.#.#.
+          |....###.#.
+          |.####.....
+          |......####
+          |.###.....#""".stripMargin
+      ),
+      mdTask(
+        """## Map 3
+          |
+          |A test maze for you to try your program on.
+          |""".stripMargin,
+        """...#......
+          |.#.#..###.
+          |.#..#...#.
+          |##.####...
+          |...#....#.
+          |.#....#.##
+          |.#.####.#.
+          |.#.#.#..#.
+          |.###.#.##.
+          |..........""".stripMargin
+      )
     )),
   )
 
