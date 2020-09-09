@@ -6,6 +6,7 @@ import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial,
 import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import willtap.markup.MarkupLanguages
+import willtap.nested.NestedStructures
 import willtap.typesTopic.{ObjectTypes, PrimitiveTypes}
 
 import scala.collection.mutable
@@ -102,6 +103,7 @@ object Common {
     "sensorsAndMotors" -> SensorsAndMotors.deck,
     "higherOrder" -> HigherOrder.deck,
     "markupLanguages" -> MarkupLanguages.deck,
+    "nestedStructures" -> NestedStructures.deck
   )
 
   val challenges:Map[String, Challenge] = Map(

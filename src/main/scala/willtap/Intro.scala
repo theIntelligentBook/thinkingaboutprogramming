@@ -72,6 +72,13 @@ object Intro {
            |
            |* [Tutorial: MicroRat](${ChallengeRoute("microRat", 0, 0).path})  \t
            |  ...in which we get a ball-like robot through a physical maze and complete assignment 3.
+           |
+           |# 8. Nested Structures
+           |
+           |* [Nested Structures](${DeckRoute("nestedStructures", 0).path})  \t
+           |  ...in which we use 2D arrays and discover Abstract Syntax Trees.
+           |
+           |
            |""".stripMargin
       )
     ),
