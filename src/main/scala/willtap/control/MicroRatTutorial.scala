@@ -349,7 +349,7 @@ object MicroRatTutorial {
            |4. and call `flood` for the four neighbouring squares, using `d+1` as the distance parameter
            |   (i.e. make the jelly flow to them next, so set their distance one square higher)
            |
-           |You start the flood by calling `calc` on the goal square, with a distance of `0`.
+           |You start the flood by calling `flood` on the goal square, with a distance of `0`.
            |
            |I recommend you test that in a JavaScript console, just by hard-coding a map array and a distance array,
            |and running your function.

@@ -68,8 +68,8 @@ object NestedStructures {
         |
         |These are in separate videos, but I'll show you live-coding:
         |
-        |* Conway's Game of Life
-        |* Minesweeper
+        |* [Conway's Game of Life](https://codesandbox.io/s/game-of-life-vanilla-kiff7)
+        |* [Minesweeper](https://codesandbox.io/s/minesweeper-vanilla-g2197)
         |
         |The next few slides have some tips and tricks from the live code
         |
@@ -105,7 +105,7 @@ object NestedStructures {
         |
         |```js
         |for (let [xx, yy] of [
-        |  [+x-1, +y-1], [+x, +y-1], [+x+1, +y+1],
+        |  [+x-1, +y-1], [+x, +y-1], [+x+1, +y-1],
         |  [+x-1, +y  ],             [+x+1, +y  ],
         |  [+x-1, +y+1], [+x, +y+1], [+x+1, +y+1]
         |]) {
@@ -128,7 +128,7 @@ object NestedStructures {
         |let app = document.getElementById("app")
         |for (let y = 0; y < 10; y++) {
         |  let button = document.createElement("button")
-        |  button.innerText = `$${y}`
+        |  button.innerText = `${y}`
         |  button.onclick = (evt) => {
         |    console.log(`This event handler remembered ${y}`)
         |  }
