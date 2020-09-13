@@ -7,7 +7,7 @@ import org.scalajs.dom.{Element, Node}
 
 import scala.scalajs.js
 
-case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[String] = None) extends VHtmlComponent {
+case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[String] = None, asyncify:Boolean = true) extends VHtmlComponent {
 
   val console = new OnScreenHtmlConsole(100)
 
@@ -16,7 +16,7 @@ case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[S
 
   private val codeRunner = new WorkerCodeRunner(
     functions,
-    Map.empty, true)
+    Map.empty, asyncify)
 
   val codePlayControls = CodePlayControls(codeRunner)(
     code,

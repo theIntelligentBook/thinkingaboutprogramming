@@ -2,6 +2,7 @@ package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
+import willtap.async.AsyncProgramming
 import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
 import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
@@ -103,7 +104,8 @@ object Common {
     "sensorsAndMotors" -> SensorsAndMotors.deck,
     "higherOrder" -> HigherOrder.deck,
     "markupLanguages" -> MarkupLanguages.deck,
-    "nestedStructures" -> NestedStructures.deck
+    "nestedStructures" -> NestedStructures.deck,
+    "flowControl" -> AsyncProgramming.deck,
   )
 
   val challenges:Map[String, Challenge] = Map(

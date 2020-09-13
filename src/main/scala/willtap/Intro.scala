@@ -79,6 +79,11 @@ object Intro {
            |  ...in which we use 2D arrays and discover Abstract Syntax Trees.
            |
            |
+           |# 9. Asynchronous Programming
+           |
+           |* [Flow Control](${DeckRoute("flowControl", 0).path})  \t
+           |  ...in which we learn to do more than one thing at once, and how to handle errors
+           |
            |""".stripMargin
       )
     ),
