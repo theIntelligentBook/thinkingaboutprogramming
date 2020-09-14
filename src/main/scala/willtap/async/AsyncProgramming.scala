@@ -17,11 +17,76 @@ object AsyncProgramming {
         |Exceptions, promises, async and await
         |
         |""".stripMargin).withClass("center middle")
-    .markdownSlide(
-      """## WARNING: Still being worked on
-        |
-        |(Some slides will be re-ordered and a few extra ones added in)
-        |""".stripMargin)
+    .veautifulSlide(<.div(
+      <.h2("What could possibly go wrong?"),
+      Challenge.split(
+        Common.markdown(
+          """There's a subtle difference that's snuck in between how Snobot and Bumper handle mazes.
+            |
+            |* When you were controlling Snobot, he would ask `if (canGoRight())` before trying to go right.
+            |  The assumption was that everything should *succeed*.
+            |
+            |* When you were controlling Bumper, he would try to move into a square, run into a wall, and recover.
+            |  The assumption was that moves *could fail*.
+            |
+            |We're going to return to the Lava Maze, and we're going to introduce Dogbot, an indestructible robot dog
+            |for Snobot. Only, Dogbot *doesn't have* a `canDogbotGoRight()` function.
+            |
+            |We're going to have to try to go down, fail, and recover from the error.
+            |""".stripMargin)
+      )(
+        <.h3("This will fail with an error"),
+        LoggingPrefabCodable(
+          """dogbotDown()
+            |dogbotRight()
+            |""".stripMargin,
+          Maze("Dogbot is in the maze!")((8, 3), (8, 4)) { maze =>
+            maze.loadFromString(
+              """########
+                |###d.###
+                |########
+                |S
+                |""".stripMargin)
+            maze.additionalFunctions = maze.dogbotFunctions
+          }, asyncify = true
+    ))))
+    .veautifulSlide(<.div(
+      <.h2("Catching errors"),
+      Challenge.split(
+        Common.markdown(
+          """Many languages (e.g. JavaScript, Java, Scala) have a syntax for catching "runtime errors" or "exceptions"
+            |
+            |In JavaScript, this is `try ... catch`
+            |
+            |* A `try` block wraps the part of the code that could fail.
+            |* A `catch` block is triggered if an error is thrown in the `try` block
+            |* The program can then continue on afterwards
+            |
+            |In this case, we've *caught* the error and told Dogbot to recover by going right.
+            |
+            |Now we've introduced a second robot, let's move on to thinking about the problem of *waiting*.
+            |""".stripMargin)
+      )(
+        <.h3("This time, we catch the error and recover"),
+        LoggingPrefabCodable(
+        """try {
+          |  dogbotDown()
+          |} catch (error) {
+          |  println("Ok, let's go right instead")
+          |  dogbotRight()
+          |}
+          |println("And we finished seemingly without an error (because we caught it)")
+          |""".stripMargin,
+        Maze("Dogbot is in the maze!")((8, 3), (8, 4)) { maze =>
+          maze.loadFromString(
+            """########
+              |###d.###
+              |########
+              |S
+              |""".stripMargin)
+          maze.additionalFunctions = maze.dogbotFunctions
+        }, asyncify = true
+    ))))
     .markdownSlide(
       """## John Lewis Christmas advert 2011
         |
@@ -43,9 +108,9 @@ object AsyncProgramming {
         Maze("Dogbot is in the maze!")((8, 8), (8, 8)) { maze =>
           maze.loadFromString(
             """#####*##
-              |#####.##
-              |Z.S...1G
-              |###.####
+              |#####.#G
+              |Z..S...1
+              |####.###
               |Z..d...#
               |########
               |""".stripMargin)
@@ -64,26 +129,47 @@ object AsyncProgramming {
         |We ought to be able to instruct them asynchronously.
         |
         |""".stripMargin)
-    .markdownSlide(
-      """## Game render loops
-        |
-        |In fact, every program we've written (in the Lava Maze, Rescue Line, and MicroRat) has had to do more than
-        |one thing at once.
-        |
-        |The program isn't just *your code*. It's also *the game itself*. While Snobot is running its routine, the
-        |game has to keep drawing (even if Snobot gets stuck in a loop)
-        |
-        |To do this, we have two *threads* going on:
-        |
-        |* The game is running in the page
-        |* Your code is being run in a *WebWorker* (a background thread). When your code stops, the game doesn't.
-        |* Whenever you called `canGoRight()`, `up()`, or any other function I gave you, these threads had to send
-        |  messages between each other.
-        |* When the game receives your message, the browser might be busy repainting the canvas. It might not get to it
-        |  straight away.
-        |
-        |The game and the worker need a way of signalling to each other when they've got a response.
-        |""".stripMargin)
+    .veautifulSlide(<.div(
+      <.h2("Game render loops"),
+      Challenge.split(
+        Common.markdown(
+          """The Lava Maze, Rescue Line, and MicroRat all have had to do more than one thing at once.
+            |The program isn't just *your code*. It's also *the game itself*. While your robot routine is running, the
+            |game has to keep drawing (even if your code finishes, throws an error, or gets stuck)
+            |
+            |To do this, we have two *threads* going on:
+            |
+            |* The game is running in the page
+            |* Your code is being run in a *WebWorker* (a background thread).
+            |* Whenever you called `canGoRight()`, `up()`, etc., these threads had to send
+            |  messages between each other.
+            |* When the game receives your message, it might be busy repainting the canvas or instructing a Blob Guard
+            |  how to move. It might not get to your message straight away.
+            |
+            |The game and the worker need a way of signalling to each other when they've got a response.
+            |""".stripMargin)
+      )(
+        <.h3("Your code isn't the whole program"),
+        LoggingPrefabCodable(
+          """try {
+            |  dogbotDown()
+            |} catch (error) {
+            |  println("Ok, let's go right instead")
+            |  dogbotRight()
+            |}
+            |println("Although our code has finished, the game keeps going.")
+            |""".stripMargin,
+          Maze("Dogbot is in the maze!")((8, 4), (8, 5)) { maze =>
+            maze.loadFromString(
+              """B.......
+                |.######.
+                |.##d.##.
+                |.######.
+                |#S
+                |""".stripMargin)
+            maze.additionalFunctions = maze.dogbotFunctions
+          }, asyncify = true
+        ))))
     .markdownSlide(
       """## Promises... magical boxes
         |
@@ -162,21 +248,22 @@ object AsyncProgramming {
         |""".stripMargin)
     .veautifulSlide(<.div(
       Common.markdown(
-        """## Turning off the lies...
+        """## Making your code work in a parallel world...
           |
-          |To make the communication between your program and the game work, we've had to turn *all your code*
+          |To make the communication between your program and the game work, the game has to turn *all your code*
           |asynchronous. We parsed your program into a tree, and ran through the tree modifying *every function definition*
           |and *every function call*.
           |
-          |Let's turn that off...
+          |Let's turn that off and program Snobot and Dogbot directly - making our own asynchronous calls.
+          |They *can* both do things at once!
           |""".stripMargin),
       JSCodable(
         Maze("Dogbot is in the maze!")((8, 8), (8, 8)) { maze =>
           maze.loadFromString(
             """#####*##
-              |#####.##
-              |Z.S...1G
-              |###.####
+              |#####.#G
+              |Z..S...1
+              |####.###
               |Z..d...#
               |########
               |""".stripMargin)
@@ -208,6 +295,29 @@ object AsyncProgramming {
         |await right()
         |```
         |""".stripMargin)
+    .veautifulSlide(<.div(
+      Common.markdown(
+        """## Controlling parallelism
+          |
+          |An `async` function *always* returns a promise. We *don't* always have to `await` it. We could put it in a
+          |variable, do something else, and come back and `await` the variable later.
+          |
+          |Let's use this to get Snobot through this maze!
+          |""".stripMargin),
+      JSCodable(
+        Maze("Dogbot is in the maze!")((8, 8), (8, 8)) { maze =>
+          maze.loadFromString(
+            """#####*##
+              |#####.#G
+              |Z..S...1
+              |####.###
+              |Z..d...#
+              |########
+              |""".stripMargin)
+          maze.additionalFunctions = maze.dogbotFunctions
+        }
+      )(tilesMode = false, asyncify = false)
+    ))
     .veautifulSlide(<.div(
       Common.markdown(
         """## How your code is processed in Will's "codables"
@@ -284,39 +394,6 @@ object AsyncProgramming {
         |""".stripMargin)
     .veautifulSlide(Challenge.split(
       Common.markdown(
-        """## Catching errors
-          |
-          |Many languages (e.g. JavaScript, Java, Scala) have a syntax for catching "runtime errors" or "exceptions"
-          |
-          |In JavaScript, this is `try ... catch`
-          |
-          |On the right, we've turned the code synchronous again so that you can see how exceptions work.
-          |Normally, asking Snobot to go down would cause an exception: `Snobot is blocked in that direction`.
-          |
-          |In this case, we've *caught* the error and told Snobot to recover by going right.
-          |""".stripMargin)
-    )(LoggingPrefabCodable(
-      """try {
-        |  down()
-        |} catch (error) {
-        |  println("Ok, let's go right instead")
-        |  right()
-        |}
-        |println("And we finished seemingly without an error (because we caught it")
-        |""".stripMargin,
-      Maze("Dogbot is in the maze!")((8, 4), (8, 4)) { maze =>
-        maze.loadFromString(
-          """#####*##
-            |#####.##
-            |S.....1G
-            |########
-            |""".stripMargin)
-        maze.additionalFunctions = maze.dogbotFunctions
-      }, asyncify = true
-    )
-    ))
-    .veautifulSlide(Challenge.split(
-      Common.markdown(
         """## Propagating errors
           |
           |We can decide at what level of the program we *want* to handle the errors.
@@ -347,8 +424,9 @@ object AsyncProgramming {
           |    println("That's as far as I can go!")
           |}
           |
-          |await up()
-          |await up()
+          |await up(); await up()
+          |await down(); await down()
+          |await right(); await right()
           |""".stripMargin,
         Maze("Dogbot is in the maze!")((8, 4), (8, 4)) { maze =>
           maze.loadFromString(
