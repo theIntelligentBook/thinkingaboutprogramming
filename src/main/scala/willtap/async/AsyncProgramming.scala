@@ -21,9 +21,10 @@ object AsyncProgramming {
       <.h2("What could possibly go wrong?"),
       Challenge.split(
         Common.markdown(
-          """There's a subtle difference that's snuck in between how Snobot and Bumper handle mazes.
+          s"""There's a subtle difference that's snuck in between how Snobot and Bumper handle mazes.
             |
-            |* When you were controlling Snobot, he would ask `if (canGoRight())` before trying to go right.
+            |* When you were controlling Snobot, he would ask  \t
+            |  `if (canGoRight())` before trying to go right.
             |  The assumption was that everything should *succeed*.
             |
             |* When you were controlling Bumper, he would try to move into a square, run into a wall, and recover.
