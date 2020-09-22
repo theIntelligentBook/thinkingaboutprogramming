@@ -84,6 +84,11 @@ object Intro {
            |* [Flow Control](${DeckRoute("flowControl", 0).path})  \t
            |  ...in which we learn to do more than one thing at once, and how to handle errors
            |
+           |
+           |# 10. Debugging
+           |
+           |* [Debugging](${DeckRoute("debugging", 0).path})  \t
+           |  ...in which we learn to find the cause of our errors
            |""".stripMargin
       )
     ),

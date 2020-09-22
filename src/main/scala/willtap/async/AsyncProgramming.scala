@@ -14,7 +14,7 @@ object AsyncProgramming {
       """
         |# Flows of Control
         |
-        |Exceptions, promises, async and await
+        |Handling errors and doing things asynchronously
         |
         |""".stripMargin).withClass("center middle")
     .veautifulSlide(<.div(
@@ -216,8 +216,7 @@ object AsyncProgramming {
         |  // what I want to do with the resolve and reject functions
         |  // Let's put them in local variables so we can return them
         |  let promise = new Promise(
-        |    (res) => { resolve = res },
-        |    (rej) => { reject = rej }
+        |    (res, rej) => { resolve = res; reject = rej },
         |  );
         |
         |  // Now we can return the three things: a promise, its resolve function, and its reject function

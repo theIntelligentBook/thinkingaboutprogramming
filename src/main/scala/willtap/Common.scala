@@ -4,6 +4,7 @@ import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
 import willtap.async.AsyncProgramming
 import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
+import willtap.debugging.Debugging
 import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import willtap.markup.MarkupLanguages
@@ -106,6 +107,7 @@ object Common {
     "markupLanguages" -> MarkupLanguages.deck,
     "nestedStructures" -> NestedStructures.deck,
     "flowControl" -> AsyncProgramming.deck,
+    "debugging" -> Debugging.deck,
   )
 
   val challenges:Map[String, Challenge] = Map(
