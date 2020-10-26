@@ -193,6 +193,9 @@ object SnobotTutorial {
            |For example, the maze on the right reflects itself vertically every on every try, and the code will only
            |work for one orientation! Oops!
            |
+           |Some challenges encourage you to code your solution in a particular way. For instance, defining your own
+           |functions that you'll then call in order (so the higher-level algorithm is more obvious) or functions you
+           |call from inside a loop.
            |""".stripMargin),
         () => VNodeStage.card(PrefabCodable(
           """while(canGoRight()) {
@@ -589,8 +592,8 @@ object SnobotTutorial {
            |Welcome to your escape assignment.
            |
            |There are eight levels, numbered 0 to 7. None of them require "flood fill" or anything that advanced, though there might be
-           |some littler puzzles in them about how the pieces work. The challenges exercise your JavaScript programming
-           |skills, for example loops and conditionals
+           |some littler puzzles in them about how the pieces work. The challenges get you to use JavaScript programming
+           |constructs, e.g. loops, conditionals, and defining functions.
            |
            |Each maze flips between two versions, so you can't *just* have a fixed list of directions to solve it.
            |Your solution to each maze will probably be some custom code, though. e.g. for the maze on the right,
@@ -655,7 +658,7 @@ object SnobotTutorial {
         mdTask(
           """## Exercise 0: Just go down
             |
-            |Snobot just has to go down. But he also has to stop at the right point because he can roll past the goal
+            |Snobot just has to go down. But he also has to stop at the right point because he can roll past the goal.
             |
             |""".stripMargin,
           setup = maze => {
@@ -758,11 +761,11 @@ object SnobotTutorial {
         mdTask(
           """## Exercise 3: It is a Blob *Guard*
             |
-            |There is a homing blob guard between you and the exit.
+            |There is a homing blob guard between you and the exit. Lead it a merry chase.
             |
-            |The second configuration of this maze is probably harder than the first for your program to solve, so
-            |remember to run it twice!
-            |
+            |If you need Snobot to pause, you might find `uptime()` useful. This function will give you the number of
+            |milliseconds Snobot has been online for. You can read its value once into a constant and then write a loop
+            |that calls uptime() until it's been long enough.
             |""".stripMargin,
           setup = maze => {
             parity = !parity
@@ -798,7 +801,11 @@ object SnobotTutorial {
         mdTask(
           """## Exercise 4: Another Blob Guard puzzle
             |
-            |There is a homing blob guard between you and the exit
+            |There is a homing blob guard between you and the exit. Squash it with a boulder and then head to the
+            |exit.
+            |
+            |Try to write your solution so it has three user-defined functions: `getInPosition()`, `waitAndSquash()`, and
+            |`runToExit()`
             |
             |""".stripMargin,
           setup = maze => {
@@ -835,8 +842,10 @@ object SnobotTutorial {
       mdTask(
         """## Exercise 5: Operation boulder drop
           |
-          |Each version of this maze has a boulder that wants to roll south
+          |Each version of this maze has a boulder that wants to roll south. Diamonds and boulders are both slippery,
+          |so if you make the space for it, it should roll off.
           |
+          |Try to write your solution so it includes two functions you'll write: `dropBoulder()` and `runToExit()`
           |""".stripMargin,
         setup = maze => {
           parity = !parity
@@ -874,10 +883,9 @@ object SnobotTutorial {
       mdTask(
         """## Exercise 6: The diamond shuffle
           |
-          |You'll need to collect all the diamonds to get through the gate.
+          |You'll need to collect all the diamonds to get through the gate. Try not to get trapped.
           |
-          |Try not to get trapped...
-          |
+          |Write a function that moves in a clockwise circle, and use it in your solution.
           |""".stripMargin,
         setup = maze => {
           parity = !parity
@@ -913,8 +921,9 @@ object SnobotTutorial {
             |you're going to need to figure out which configuration the maze is so you'll know if you can keep the left
             |or right goals unblocked.
             |
-            |Hint: you're going to need that boulder in the middle.
-            |
+            |Again, let's encourage you to define some of your own functions in your solution: `pushMiddleBoulder()`,
+            |`collectDiamonds()`, and `runToExit()`. Keep a flag (a variable) for whether the maze is in the left or
+            |right configuration, and either use it from inside the functions or pass it to them as a parameter.
             |""".stripMargin,
           setup = maze => {
             parity = !parity
@@ -925,7 +934,7 @@ object SnobotTutorial {
                   | #v*...*v#
                   | #2.>1..2#
                   | #.......#
-                  | ..#   #..
+                  | .2#   #2.
                   | #G#   #G#
                   | ###   ###
                   |""".stripMargin
@@ -935,7 +944,7 @@ object SnobotTutorial {
                   | #v*...*v#
                   | #2..1<.2#
                   | #.......#
-                  | ..#   #..
+                  | .2#   #2.
                   | #G#   #G#
                   | ###   ###
                   |""".stripMargin
