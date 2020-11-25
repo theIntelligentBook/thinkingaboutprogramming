@@ -3,7 +3,7 @@ package willtap
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
 import willtap.async.AsyncProgramming
-import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors}
+import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors, States}
 import willtap.debugging.Debugging
 import willtap.higherorder.HigherOrder
 import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
@@ -102,6 +102,7 @@ object Common {
     "types" -> PrimitiveTypes.deck,
     "objectTypes" -> ObjectTypes.deck,
     "closedLoop" -> OpenAndClosedLoop.deck,
+    "states" -> States.deck,
     "sensorsAndMotors" -> SensorsAndMotors.deck,
     "higherOrder" -> HigherOrder.deck,
     "markupLanguages" -> MarkupLanguages.deck,
