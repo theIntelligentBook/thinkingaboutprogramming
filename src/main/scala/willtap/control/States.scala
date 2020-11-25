@@ -572,7 +572,7 @@ object States {
           |This is a big and complex task, so let's live code a "simple" solution... it's quite a bit of code, but
           |at least it's broken down to be a little more meaningful.
           |""".stripMargin),
-      JSCodable(introducingLander.canvasLand)(tilesMode = false)
+      JSCodable(theChallenge.canvasLand)(tilesMode = false)
     ))
     .markdownSlide(
       """## Our solution
