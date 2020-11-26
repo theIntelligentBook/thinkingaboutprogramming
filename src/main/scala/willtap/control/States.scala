@@ -22,7 +22,7 @@ object States {
         """ #v..vv.#
           | #S****G#
           | #.#...##
-          | #Z..*..Z""".stripMargin)
+          | #B..*..Z""".stripMargin)
       maze.additionalFunctions = maze.dogbotFunctions
     }
 
@@ -304,7 +304,7 @@ object States {
              |and then brake the rest of the way, rather than moving in 100 unit chunks.
              |
              |If we accelerate flat out from a stand still:  \t
-             |`distance = acceleration * Math.pow(time, 2)`
+             |`distance = 0.5 * acceleration * Math.pow(time, 2)`
              |
              |We need to solve for time, and end up with something that's going to look like
              |
