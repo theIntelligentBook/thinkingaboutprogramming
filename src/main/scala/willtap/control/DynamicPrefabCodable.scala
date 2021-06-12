@@ -8,7 +8,7 @@ import org.scalajs.dom.{Element, Node}
 case class DynamicPrefabCodable(name:String)(code: => String, codable:Codable, codeStyle:Option[String] = None, asyncify:Boolean = true) extends VHtmlComponent {
 
   private val codeRunner = new WorkerCodeRunner(
-    ((for { (n, _, f) <- codable.functions } yield n -> f).toMap),
+    ((for { (n, _, f) <- codable.functions() } yield n -> f).toMap),
     Map.empty, asyncify)
 
   val codePlayControls = CodePlayControls(codeRunner)(

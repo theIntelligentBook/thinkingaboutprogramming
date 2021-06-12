@@ -1,7 +1,7 @@
 package willtap
 
 import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, VSlides}
+import com.wbillingsley.veautiful.templates.{Challenge, VSlides, DefaultVSlidesPlayer}
 import willtap.async.AsyncProgramming
 import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors, States}
 import willtap.debugging.Debugging
@@ -19,7 +19,7 @@ import scala.scalajs.js
   */
 object Common {
 
-  val markdownGenerator = new Markup({ s:String => js.Dynamic.global.marked(s).asInstanceOf[String] })
+  val markdownGenerator = new Markup({ (s:String) => js.Dynamic.global.marked(s).asInstanceOf[String] })
 
   def markdown(s:String):VHtmlNode = markdownGenerator.Fixed(s)
 
@@ -126,7 +126,7 @@ object Common {
           <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
         )
       ),
-      <.div(decks(s).atSlide(p))
+      <.div(DefaultVSlidesPlayer(decks(s))(p))
     )
   }
 

@@ -184,7 +184,7 @@ object ImpossibleThings {
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 
-  val deck = builder.renderNode
+  val deck = builder.renderSlides
 
 
 
@@ -253,9 +253,9 @@ object ImpossibleThings {
 
       // If we've reached tick 500, we need to record the result in the table
       if (tick == 500) {
-        tableData.append(heat.toDouble -> particles.count {
+        tableData.append(heat.toDouble -> particles.count({
           case (v, track) => track && (v - Vec2(width / 2, height / 2)).magnitude > boundaryRadius
-        })
+        }).toDouble)
       }
     }
 

@@ -124,8 +124,8 @@ object SensorsAndMotors {
 
   case class HBridge() extends VHtmlComponent {
 
-    implicit val wireCol = Wire.voltageColoring
-    implicit val nMosCol = NMOSSwitch.voltageColouring
+    given wireCol:Wire.ColouringRule = Wire.voltageColoring
+    given nMosCol:NMOSSwitch.ColouringRule = NMOSSwitch.voltageColouring
 
     val vdd = new VoltageSource(400 -> 175, North, Some(5d))
     val gnd = new Ground(400, 340)
@@ -474,6 +474,6 @@ object SensorsAndMotors {
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
 
-  val deck = builder.renderNode
+  val deck = builder.renderSlides
 
 }

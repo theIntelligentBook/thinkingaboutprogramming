@@ -1,7 +1,7 @@
 enablePlugins(ScalaJSPlugin)
 
 name := "Thinking about Programming"
-scalaVersion := "2.13.1"
+scalaVersion := "3.0.0"
 
 // This is an application with a main method
 scalaJSUseMainModuleInitializer := true
@@ -11,10 +11,9 @@ resolvers += "jitpack" at "https://jitpack.io"
 updateOptions := updateOptions.value.withLatestSnapshots(false)
 
 libraryDependencies ++= Seq(
-  "org.scala-js" %%% "scalajs-dom" % "1.1.0",
-  "com.github.wbillingsley.veautiful" %%% "veautiful" % "master-SNAPSHOT",
-  "com.github.wbillingsley.veautiful" %%% "veautiful-templates" % "master-SNAPSHOT",
-	"com.github.wbillingsley.veautiful" %%% "scatter" % "master-SNAPSHOT",
+  "com.github.wbillingsley.veautiful" %%% "veautiful" % "v0.2-SNAPSHOT",
+  "com.github.wbillingsley.veautiful" %%% "veautiful-templates" % "v0.2-SNAPSHOT",
+	"com.github.wbillingsley.veautiful" %%% "scatter" % "v0.2-SNAPSHOT",
   "com.github.wbillingsley" % "lavamaze" % "master-SNAPSHOT", // Need to single-% as it's a top-level jitpack project
   "com.github.theintelligentbook" % "circuitsup" % "master-SNAPSHOT"
 )

@@ -441,7 +441,7 @@ object AsyncProgramming {
     ))
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
-  def deck = builder.renderNode
+  def deck = builder.renderSlides
 
 
 }

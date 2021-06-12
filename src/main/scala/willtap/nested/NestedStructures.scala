@@ -200,6 +200,6 @@ object NestedStructures {
         |""".stripMargin)
     .markdownSlide(Common.willCcBy).withClass("bottom")
 
-  val deck = builder.renderNode
+  val deck = builder.renderSlides
 
 }

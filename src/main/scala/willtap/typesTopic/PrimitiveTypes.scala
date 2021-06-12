@@ -459,7 +459,7 @@ object PrimitiveTypes {
 
 
 
-  val deck = builder.renderNode
+  val deck = builder.renderSlides
 
 
 

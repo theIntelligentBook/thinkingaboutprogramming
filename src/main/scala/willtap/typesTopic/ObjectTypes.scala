@@ -367,7 +367,7 @@ object ObjectTypes {
 
 
 
-  val deck = builder.renderNode
+  val deck = builder.renderSlides
 
 
 

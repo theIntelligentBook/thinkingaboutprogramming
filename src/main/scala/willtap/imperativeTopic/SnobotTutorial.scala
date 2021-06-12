@@ -355,10 +355,12 @@ object SnobotTutorial {
           val sy = Random.nextInt(8) + 1
 
           var (gx, gy) = (0, 0)
-          do {
+          while {
             gx = Random.nextInt(6) + 1
             gy = Random.nextInt(6) + 1
-          } while (gx == sx || gy == sy)
+
+            gx == sx || gy == sy
+          } do ()
 
           maze.snobotStart = (sx, sy)
           maze.addFixture(new Goal(gx, gy))
@@ -391,10 +393,12 @@ object SnobotTutorial {
                 val sy = Random.nextInt(4) + 1
 
                 var (gx, gy) = (0, 0)
-                do {
+                while {
                   gx = Random.nextInt(4) + 1
                   gy = Random.nextInt(4) + 1
-                } while (gx == sx || gy == sy)
+
+                  gx == sx || gy == sy
+                } do ()
 
                 maze.snobotStart = (sx, sy)
                 maze.addFixture(new Goal(gx, gy))
