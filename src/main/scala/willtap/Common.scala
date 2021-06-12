@@ -23,44 +23,6 @@ object Common {
 
   def markdown(s:String):VHtmlNode = markdownGenerator.Fixed(s)
 
-  val routes:Seq[(Route, String)] = Seq(
-    IntroRoute -> "Home",
-  )
-
-  def linkToRoute(r:Route, s:String):VHtmlNode = <.a(
-    ^.href := Router.path(r),
-    ^.cls := (if (Router.route == r) "nav-link active" else "nav-link"),
-    s
-  )
-
-  def leftMenu:VHtmlNode = <("nav")(^.cls := "d-none d-md-block bg-light sidebar",
-    <.div(^.cls := "sidebar-sticky",
-      <.ul(^.cls := "nav nav-pills flex-column",
-        for { (r, t) <- routes } yield <.li(
-          ^.cls := "nav-item",
-          linkToRoute(r, t)
-        )
-      )
-    )
-  )
-
-  def layout(ch:VHtmlNode) = shell(<.div(^.cls := "move-content-down",
-    <.div(^.cls := "row",
-      <.div(^.cls := "col-sm-3", leftMenu),
-      <.div(^.cls := "col-sm-9", ch)
-    )
-  ))
-
-  def shell(ch:VHtmlNode) = <.div(
-    <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
-      <.div(^.cls := "container",
-        <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
-      )
-    ),
-
-    <.div(^.cls := "container", ch)
-  )
-
   /** Circuits Up! Logo */
   def symbol = {
     <.span()
@@ -95,51 +57,5 @@ object Common {
   /*
    * Slide decks
    */
-
-  val decks:Map[String, VSlides] = Map(
-    "impossibleThings" -> ImpossibleThings.deck,
-    "commandsAndFunctions" -> CommandsAndFunctions.deck,
-    "types" -> PrimitiveTypes.deck,
-    "objectTypes" -> ObjectTypes.deck,
-    "closedLoop" -> OpenAndClosedLoop.deck,
-    "states" -> States.deck,
-    "sensorsAndMotors" -> SensorsAndMotors.deck,
-    "higherOrder" -> HigherOrder.deck,
-    "markupLanguages" -> MarkupLanguages.deck,
-    "nestedStructures" -> NestedStructures.deck,
-    "flowControl" -> AsyncProgramming.deck,
-    "debugging" -> Debugging.deck,
-  )
-
-  val challenges:Map[String, Challenge] = Map(
-    "turtleGraphics" -> TurtleTutorial.challenge,
-    "lavaMaze" -> SnobotTutorial.challenge,
-    "rescueLine" -> RescueLineTutorial.challenge,
-    "microRat" -> MicroRatTutorial.challenge
-  )
-
-  def showDeck(s:String, p:Int):VHtmlNode = {
-    println(s"Name is $s page is $p")
-    <.div(
-      <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
-        <.div(^.cls := "container",
-          <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
-        )
-      ),
-      <.div(DefaultVSlidesPlayer(decks(s))(p))
-    )
-  }
-
-  def showChallenge(name:String, level:Int, stage:Int):VHtmlNode = {
-    <.div(
-      <("nav")(^.cls := "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow",
-        <.div(^.cls := "container",
-          <.a(^.cls := "navbar-brand col-sm-3 col-md-2 mr-0", ^.href := "#", "")
-        )
-      ),
-      <.div(challenges(name).show(level, stage))
-    )
-  }
-
 
 }

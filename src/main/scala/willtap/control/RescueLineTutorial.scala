@@ -16,15 +16,6 @@ import scala.util.Random
 
 object RescueLineTutorial {
 
-  implicit val nextButton: () => VHtmlNode = () => {
-    challenge.next match {
-      case Some((l, s)) => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("rescueLine", l, s)), s"Next")
-      case _ => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("rescueLine", 0, 0)), s"Start")
-    }
-  }
-
-  implicit val onCompletionUpdate: () => Unit = () => challenge.rerender()
-
   def mdTask(markdown:String, tw:Int = 5, th:Int = 5, start:(Int, Int) = (0, 0), inaccurate:Boolean = true)(f: dom.CanvasRenderingContext2D => Unit) = new ExerciseStage() {
 
     override def completion: Challenge.Completion = Open
@@ -630,16 +621,6 @@ object RescueLineTutorial {
         end(0, 2, FACING_SOUTH, ctx)
       },
     )),
-  )
-
-
-  val challenge = Challenge(
-    levels,
-    homePath = (_) => Router.path(IntroRoute),
-    levelPath = (_, i) => Router.path(ChallengeRoute("rescueLine", i, 0)),
-    stagePath = (_, i, j) => Router.path(ChallengeRoute("rescueLine", i, j)),
-    homeIcon = <.span(),
-    scaleToWindow = true
   )
 
 }

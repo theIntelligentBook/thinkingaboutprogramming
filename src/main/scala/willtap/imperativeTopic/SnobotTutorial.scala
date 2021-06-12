@@ -9,21 +9,11 @@ import com.wbillingsley.veautiful.templates.Challenge.{Complete, Level, Open}
 import lavamaze.{FloorTile, Goal, Maze, Overlay}
 import org.scalajs.dom.{Element, Node}
 import willtap.templates.{ExerciseStage, MarkdownStage, VNodeStage}
-import willtap.{ChallengeRoute, Common, DeckRoute, IntroRoute, Router}
+import willtap.Common
 
 import scala.util.Random
 
 object SnobotTutorial {
-
-  implicit val nextButton: () => VHtmlNode = () => {
-    challenge.next match {
-      case Some((l, s)) => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("lavaMaze", l, s)), s"Next")
-      case _ => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("lavaMaze", 0, 0)), s"Start")
-    }
-  }
-
-  implicit val onCompletionUpdate: () => Unit = () => challenge.rerender()
-
 
   /** Adds X and Y functions for Snobot and Goal locations to a maze */
   def addXYFunctions(maze:Maze):Unit = {
@@ -959,16 +949,6 @@ object SnobotTutorial {
       }
 
     ))
-  )
-
-
-  val challenge = Challenge(
-    levels,
-    homePath = (_) => Router.path(IntroRoute),
-    levelPath = (_, i) => Router.path(ChallengeRoute("lavaMaze", i, 0)),
-    stagePath = (_, i, j) => Router.path(ChallengeRoute("lavaMaze", i, j)),
-    homeIcon = <.span(),
-    scaleToWindow = true
   )
 
 }

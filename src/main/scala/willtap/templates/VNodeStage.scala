@@ -6,7 +6,7 @@ import com.wbillingsley.veautiful.templates.Challenge
 import org.scalajs.dom.{Element, Node}
 import willtap.Common
 
-case class VNodeStage(n: () => VHtmlNode)(implicit val nextButton: () => VHtmlNode) extends Challenge.Stage {
+case class VNodeStage(n: () => VHtmlNode) extends Challenge.Stage {
 
   override def completion: Challenge.Completion = Challenge.Open
 
@@ -20,7 +20,7 @@ case class VNodeStage(n: () => VHtmlNode)(implicit val nextButton: () => VHtmlNo
 
 object VNodeStage {
 
-  def twoColumn(title:String)(left: () => VHtmlNode, right: () => VHtmlNode)(implicit nextButton: () => VHtmlNode):VNodeStage = {
+  def twoColumn(title:String)(left: () => VHtmlNode, right: () => VHtmlNode):VNodeStage = {
     VNodeStage(
       () => <.div(
         <.h2(title),

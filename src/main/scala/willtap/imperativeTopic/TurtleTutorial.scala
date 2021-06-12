@@ -8,19 +8,9 @@ import com.wbillingsley.veautiful.templates.Challenge
 import com.wbillingsley.veautiful.templates.Challenge.{Complete, Level, Open}
 import org.scalajs.dom.{Element, Node}
 import willtap.templates.{ExerciseStage, MarkdownStage, VNodeStage}
-import willtap.{ChallengeRoute, Common, DeckRoute, IntroRoute, Router}
+import willtap.{Common, site}
 
 object TurtleTutorial {
-
-  implicit val nextButton: () => VHtmlNode = () => {
-    challenge.next match {
-      case Some((l, s)) => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("turtleGraphics", l, s)), s"Next")
-      case _ => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("turtleGraphics", 0, 0)), s"Start")
-    }
-  }
-
-  implicit val onCompletionUpdate: () => Unit = () => challenge.rerender()
-
 
   object DrawASquare extends ExerciseStage() {
     override def completion: Challenge.Completion = Complete(None, None)
@@ -141,8 +131,8 @@ object TurtleTutorial {
                   |`left(120)`.
                   |
                   |Initially, just write out each command and get it drawing the triangle.
-                  |Then, try changing your program to use a <a target="_blank" href="${DeckRoute("commandsAndFunctions", 18).path}">while loop</a>.
-                  |Then, try changing your program to use a <a target="_blank" href="${DeckRoute("commandsAndFunctions", 19).path}">C-style for-loop</a>.
+                  |Then, try changing your program to use a <a target="_blank" href="${site.router.path(site.DeckRoute("commandsAndFunctions", 18))}">while loop</a>.
+                  |Then, try changing your program to use a <a target="_blank" href="${site.router.path(site.DeckRoute("commandsAndFunctions", 19))}">C-style for-loop</a>.
                   |
                   |If you need them, there are crib notes on the next page. You can go forward and back between exercises at any time using the navigation on the right.
                   |""".stripMargin),
@@ -705,16 +695,6 @@ object TurtleTutorial {
         )),
       ),
     ))
-  )
-
-
-  val challenge = Challenge(
-    levels,
-    homePath = (_) => Router.path(IntroRoute),
-    levelPath = (_, i) => Router.path(ChallengeRoute("turtleGraphics", i, 0)),
-    stagePath = (_, i, j) => Router.path(ChallengeRoute("turtleGraphics", i, j)),
-    homeIcon = <.span(),
-    scaleToWindow = true
   )
 
 }

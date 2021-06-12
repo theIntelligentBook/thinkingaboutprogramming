@@ -16,15 +16,6 @@ import scala.util.Random
 
 object MicroRatTutorial {
 
-  implicit val nextButton: () => VHtmlNode = () => {
-    challenge.next match {
-      case Some((l, s)) => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("microRat", l, s)), s"Next")
-      case _ => <.a(^.cls := "btn btn-outline-secondary pulse-link", ^.href := Router.path(ChallengeRoute("microRat", 0, 0)), s"Start")
-    }
-  }
-
-  implicit val onCompletionUpdate: () => Unit = () => challenge.rerender()
-
   def mdTask(markdown:String, mazeString:String, tw:Int = 10, th:Int = 10, start:(Int, Int) = (0, 0), inaccurate:Boolean = true) = new ExerciseStage() {
 
     override def completion: Challenge.Completion = Open
@@ -479,16 +470,6 @@ object MicroRatTutorial {
           |..........""".stripMargin
       )
     )),
-  )
-
-
-  val challenge = Challenge(
-    levels,
-    homePath = (_) => Router.path(IntroRoute),
-    levelPath = (_, i) => Router.path(ChallengeRoute("microRat", i, 0)),
-    stagePath = (_, i, j) => Router.path(ChallengeRoute("microRat", i, j)),
-    homeIcon = <.span(),
-    scaleToWindow = true
   )
 
 }
