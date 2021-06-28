@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans|Michroma');
+
+
+/*
+ * CSS for various stages
+ */
+
+video.scatter-video {
+    height: 150px;
+}
+
+.canvas-scroll {
+    width: -moz-fit-content;
+    width: fit-content;
+    overflow-y: scroll;
+    height: 450px;
+}
+
+.error-message {
+    color: darkred;
+}
+
+.cod-card {
+    display: inline-flex;
+    padding: 20px;
+    margin: 10px;
+    width: 80px;
+    height: 100px;
+    font-family: "Michroma", sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    border: 1px solid rebeccapurple;
+    border-radius: 5px;
+
+    background-color: #0d2d48;
+    background-image: linear-gradient(white 2px, transparent 2px),
+    linear-gradient(90deg, white 2px, transparent 2px),
+    linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
+
+    color: white;
+
+    box-shadow: 10px 5px 5px #4e4d4d;
+
+}
+
+.cod-card.cod-card-10 {
+    background-color: #99461b;
+}
+.cod-card.cod-card-11 {
+    background-color: #99461b;
+}
+.cod-card.cod-card-12 {
+    background-color: #99461b;
+}
+.cod-card.cod-card-0 {
+    background-color: #64000c;
+}
+
+.cod-deck {
+    min-height: 400px;
+}
+
+.jelly-cell {
+    width: 60px;
+    height: 60px;
+    border: 1px solid lightgray;
+}
+
+.jelly-grid .jelly-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 60px);
+}
+
+.jelly-cell .floor {
+    background-color: #242424;
+    width: 100%;
+    height: 100%;
+}
+
+.jelly-cell .lava {
+    background-color: darkred;
+    width: 100%;
+    height: 100%;
+}
+
+.jelly-cell .jelly {
+    background-color: darkgreen;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    line-height: 60px;
+}
+
+.jelly-cell .jelly.active {
+    animation: pulse-jelly 2s infinite;
+}
+
+
+@keyframes pulse-jelly {
+    0% {
+        opacity: 1;
+        border-radius: 5px;
+    }
+
+    70% {
+        opacity: 0.6;
+        border-radius: 20px;
+    }
+
+    100% {
+        opacity: 1;
+        border-radius: 5px;
+    }
+}
