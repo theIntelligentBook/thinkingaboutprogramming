@@ -6,6 +6,17 @@ import com.wbillingsley.veautiful.templates.Challenge
 import com.wbillingsley.veautiful.templates.Challenge.Open
 import org.scalajs.dom.{Element, Node}
 
+def echo360embed(videoId:String, size:(Int, Int)) = {
+  val (width, height) = size
+
+  <.div(
+    <("iframe")(
+      ^.attr("height") := height, ^.attr("width") := width, ^.attr("allowfullscreen") := "true", ^.attr("frameborder") := "0",
+      ^.src := s"https://echo360.org.au/media/$videoId/public?autoplay=false&automute=false"
+    )
+  )
+}
+
 case class Echo360Stage(videoId:String, size:(Int, Int) = (1600, 960), altLinks:Map[String, String] = Map.empty) extends Challenge.Stage  {
 
   override protected def render: DiffNode[Element, Node] = {

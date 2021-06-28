@@ -3,7 +3,7 @@ package willtap
 import com.wbillingsley.veautiful.html._
 import com.wbillingsley.veautiful.doctacular._
 import org.scalajs.dom
-import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, TurtleTutorial}
+import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTutorial, TurtleTutorial}
 import Medium._
 import willtap.async.AsyncProgramming
 import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors, States}
@@ -29,33 +29,41 @@ object Main {
     site.toc = site.Toc(
       "Home" -> site.HomeRoute,
 
+      "Video intro" -> site.add("intro", Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("GXSF1E0Swa8"))))),
+
       "1. Commands and Functions" -> site.Toc(
         "Making impossible things" -> site.add("impossibleThings",
           Alternative("Slide deck", Deck(() => ImpossibleThings.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("iSzNRCj5_jo"))))
         ),
         "Commands and functions" -> site.add("commandsAndFunctions",
           Alternative("Slide deck", Deck(() => CommandsAndFunctions.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("TBPgnhZaAo8"))))
         ),
         "Tutorial: Turtle graphics" -> site.addChallenge("turtleGraphics", TurtleTutorial.levels),
       ),
       "2. Types" -> site.Toc(
         "Types" -> site.add("types",
           Alternative("Slide deck", Deck(() => PrimitiveTypes.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("MOw1fAFsHI0"))))
         ),
         "Reference Types" -> site.add("referenceTypes",
           Alternative("Slide deck", Deck(() => ObjectTypes.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("LZYUnFxaVXw"))))
         ),
-        "Tutorial: Lava Maze" -> site.addChallenge("lavaMaze", TurtleTutorial.levels),
+        "Tutorial: Lava Maze" -> site.addChallenge("lavaMaze", SnobotTutorial.levels),
       ),
       "3. Robots & Control" -> site.Toc(
         "Open and Closed Loop" -> site.add("closedLoop",
-          Alternative("Slide deck", Deck(() => OpenAndClosedLoop.deck))
+          Alternative("Slide deck", Deck(() => OpenAndClosedLoop.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("KE-RFGz7Va4"))))
         ),
         "Handling state" -> site.add("state",
-          Alternative("Slide deck", Deck(() => States.deck))
+          Alternative("Slide deck", Deck(() => States.deck)),
+          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("KE-XMyoAWggfik"))))
         ),
         "Tutorial: Rescue Line" -> site.addChallenge("rescueLine", RescueLineTutorial.levels),
-        "Handling state" -> site.add("sensorsAndMotors",
+        "Sensors and Motors" -> site.add("sensorsAndMotors",
           Alternative("Slide deck", Deck(() => SensorsAndMotors.deck))
         ),
       ),
@@ -77,7 +85,7 @@ object Main {
 
       ),
       "7. Asynchronous Programming" -> site.Toc(
-        "Async and promises" -> site.add("markupLanguages",
+        "Async and promises" -> site.add("flowsOfControl",
           Alternative("Slide deck", Deck(() => AsyncProgramming.deck))
         ),
 

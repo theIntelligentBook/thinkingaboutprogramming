@@ -10,6 +10,7 @@ import willtap.imperativeTopic.{CommandsAndFunctions, ImpossibleThings, SnobotTu
 import willtap.markup.MarkupLanguages
 import willtap.nested.NestedStructures
 import willtap.typesTopic.{ObjectTypes, PrimitiveTypes}
+import com.wbillingsley.veautiful.doctacular.VideoPlayer
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -59,3 +60,25 @@ object Common {
    */
 
 }
+
+case class Echo360Video(videoId:String)
+case class YouTubeVideo(videoId:String)
+
+given VideoPlayer[Echo360Video] with
+  extension (v:Echo360Video) def embeddedPlayer(width:Int, height:Int) =
+    <.div(
+      <("iframe")(
+        ^.attr("height") := height, ^.attr("width") := width, ^.attr("allowfullscreen") := "true", ^.attr("frameborder") := "0",
+        ^.src := s"https://echo360.org.au/media/${v.videoId}/public?autoplay=false&automute=false"
+      )
+    )
+
+given VideoPlayer[YouTubeVideo] with
+  extension (v:YouTubeVideo) def embeddedPlayer(width:Int = 560, height:Int = 315) =
+    <.div(
+      <("iframe")(
+        ^.attr("height") := height, ^.attr("width") := width, ^.attr("allowfullscreen") := "true", ^.attr("frameborder") := "0",
+        ^.attr("allow") := "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+        ^.src := s"https://www.youtube-nocookie.com/embed/${v.videoId}"
+      )
+    )

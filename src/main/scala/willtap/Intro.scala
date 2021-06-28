@@ -1,14 +1,15 @@
 package willtap
 
 import com.wbillingsley.veautiful.html.{<, ^, unique}
+import willtap.templates._
 import site._
 
 object Intro {
 
   val frontPage = unique(<.div(
-    <.div(
+    <.div(^.attr("style") := "position: relative; top: 0;",
       <.img(^.src := "images/tap720.jpg", ^.alt := "Thinking About Programming"),
-      <.div(^.cls := "abs-bottom-right white-translucent-bg",
+      <.div(^.attr("style") := "position: absolute; bottom: 0px; right: 0px; background: rgba(255, 255, 255, 0.7);",
         Common.markdown("[Will Billingsley](https://www.wbillingsley.com)'s computational thinking course")
       )
     ),
@@ -26,7 +27,11 @@ object Intro {
         )
       ),
       Common.markdown(
-        s"""
+        s"""## 0. Intro
+           |
+           |* [Video intro](${router.path(VideoRoute("intro"))})  \t
+           |  ...in which we hear what this course is about
+           |
            |## 1. Commands and Functions
            |
            |* [Making Impossible Things](${router.path(DeckRoute("impossibleThings", 0))})  \t
@@ -84,7 +89,7 @@ object Intro {
            |
            |# 9. Asynchronous Programming
            |
-           |* [Flow Control](${router.path(DeckRoute("flowControl", 0))})  \t
+           |* [Flows of Control](${router.path(DeckRoute("flowsOfControl", 0))})  \t
            |  ...in which we learn to do more than one thing at once, and how to handle errors
            |
            |
