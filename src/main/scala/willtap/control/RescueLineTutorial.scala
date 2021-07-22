@@ -105,11 +105,13 @@ object RescueLineTutorial {
           |turtle.
           |
           |`r`, `g`, and `b` are how sensitive the sensor is to the red, green, and blue colour values
-          |underneath it. `255` means completely sensitive.
-          |The sensitivity number is bitwise-ANDed with the colour value. Usually, you'll want to use numbers like
-          |`255` or `127` that are mostly binary `1`s. (If you set a sensitivity to `256` you might be surprised it is
-          |completely *insensitive* - rgb values go from 0 to 255, and any of those numbers when bitwise-ANDed with 256
-          |will produce `0`.)
+          |underneath it.
+          |These are relative to each other. So, if `r` is twice `g`, then the sensor will be twice as sensitive to
+          |the red channel as it is to the green channel.
+          |The equation it uses to come to a result is:
+          |
+          |`((r * red / 255) + (g * green / 255) + (b * blue / 255)) / (r + g + b)`.
+          |
           |If you wish to read a single colour's value, put a sensor that is only sensitive to that colour. e.g.
           |`addLineSensor(50, 0, 255, 0, 0)` would add a sensor that is only sensitive to red.
           |
