@@ -5,7 +5,12 @@ target/
 .settings/
 .idea/
 
-
+# VS Code, Metals, Bloop
 .metals/
 .bloop/
 .vscode/
+.bsp/
+project/metals.sbt
+project/project
+
+
