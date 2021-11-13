@@ -4,3 +4,8 @@ target/
 .project
 .settings/
 .idea/
+
+
+.metals/
+.bloop/
+.vscode/
