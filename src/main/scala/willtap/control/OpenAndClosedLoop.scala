@@ -4,7 +4,7 @@ import canvasland.{CanvasLand, LineTurtle, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.html.{<, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
-import willtap.Common
+import willtap.{Common, given}
 
 import scala.util.Random
 

@@ -4,7 +4,7 @@ import coderunner.JSCodable
 import com.wbillingsley.veautiful.html.<
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
 import lavamaze.Maze
-import willtap.Common
+import willtap.{Common, given}
 import willtap.imperativeTopic.{LoggingPrefabCodable, PrefabCodable}
 
 object Debugging {

@@ -1,7 +1,7 @@
 package willtap.markup
 
 import com.wbillingsley.veautiful.templates.DeckBuilder
-import willtap.Common
+import willtap.{Common, given}
 import willtap.control.OpenAndClosedLoop.builder
 
 object MarkupLanguages {

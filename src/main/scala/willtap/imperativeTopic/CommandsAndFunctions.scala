@@ -8,7 +8,7 @@ import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder, ScatterPlot
 import lavamaze.Maze
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node, html, svg}
-import willtap.Common
+import willtap.{Common, given}
 
 object CommandsAndFunctions {
 

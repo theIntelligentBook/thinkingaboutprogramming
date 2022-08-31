@@ -26,41 +26,42 @@ object Main {
     val n = dom.document.getElementById("render-here")
     n.innerHTML = ""
 
+    import site.given
     site.toc = site.Toc(
       "Home" -> site.HomeRoute,
 
-      "Video intro" -> site.add("intro", Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("GXSF1E0Swa8"))))),
+      "Video intro" -> site.add("intro", Alternative("Video", Video(() => YouTubeVideo("GXSF1E0Swa8")))),
 
       "1. Commands and Functions" -> site.Toc(
         "Making impossible things" -> site.add("impossibleThings",
           Alternative("Slide deck", Deck(() => ImpossibleThings.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("iSzNRCj5_jo"))))
+          Alternative("Video", Video(() => YouTubeVideo("iSzNRCj5_jo")))
         ),
         "Commands and functions" -> site.add("commandsAndFunctions",
           Alternative("Slide deck", Deck(() => CommandsAndFunctions.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("TBPgnhZaAo8"))))
+          Alternative("Video", Video(() => YouTubeVideo("TBPgnhZaAo8")))
         ),
         "Tutorial: Turtle graphics" -> site.addChallenge("turtleGraphics", TurtleTutorial.levels),
       ),
       "2. Types" -> site.Toc(
         "Types" -> site.add("types",
           Alternative("Slide deck", Deck(() => PrimitiveTypes.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("MOw1fAFsHI0"))))
+          Alternative("Video", Video(() => YouTubeVideo("MOw1fAFsHI0")))
         ),
         "Reference Types" -> site.add("referenceTypes",
           Alternative("Slide deck", Deck(() => ObjectTypes.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("LZYUnFxaVXw"))))
+          Alternative("Video", Video(() => YouTubeVideo("LZYUnFxaVXw")))
         ),
         "Tutorial: Lava Maze" -> site.addChallenge("lavaMaze", SnobotTutorial.levels),
       ),
       "3. Robots & Control" -> site.Toc(
         "Open and Closed Loop" -> site.add("closedLoop",
           Alternative("Slide deck", Deck(() => OpenAndClosedLoop.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("KE-RFGz7Va4"))))
+          Alternative("Video", Video(() => YouTubeVideo("KE-RFGz7Va4")))
         ),
         "Handling state" -> site.add("state",
           Alternative("Slide deck", Deck(() => States.deck)),
-          Alternative("Video", Video(() => PlayableVideo(YouTubeVideo("KE-XMyoAWggfik"))))
+          Alternative("Video", Video(() => YouTubeVideo("KE-XMyoAWggfik")))
         ),
         "Tutorial: Rescue Line" -> site.addChallenge("rescueLine", RescueLineTutorial.levels),
         "Sensors and Motors" -> site.add("sensorsAndMotors",

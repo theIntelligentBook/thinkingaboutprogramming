@@ -5,7 +5,7 @@ import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlNode, ^}
 import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder, ScatterPlot}
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node, html, svg}
-import willtap.Common
+import willtap.{Common, given}
 
 import scala.collection.mutable
 

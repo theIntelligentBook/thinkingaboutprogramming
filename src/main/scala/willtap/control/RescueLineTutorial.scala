@@ -30,7 +30,16 @@ object RescueLineTutorial {
         if (inaccurate) applyStandardInaccuracy(r)
       },
       setup = c => {
+        println("Setup called in mdTask")
         c.fillCanvas("white")
+        println("about to draw a line")
+
+        c.withCanvasContext { ctx =>
+          ctx.strokeStyle = "blue"
+          ctx.lineWidth = 5
+          ctx.moveTo(10, 10)
+          ctx.lineTo(200,200)  
+        }
         c.drawGrid("rgb(200,240,240)", RescueLine.tileSize, 1)
         c.withCanvasContext { ctx =>
           f(ctx)

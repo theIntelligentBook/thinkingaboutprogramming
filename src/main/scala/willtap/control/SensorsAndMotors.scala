@@ -9,7 +9,7 @@ import com.wbillingsley.wren.Orientation.{East, North}
 import com.wbillingsley.wren.{Circuit, Component, Constraint, ConstraintPropagator, Ground, Junction, LogicInput, NMOSSwitch, Terminal, VoltageSource, Wire}
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node}
-import willtap.Common
+import willtap.{Common, given}
 
 import scala.scalajs.js
 import scala.util.Random

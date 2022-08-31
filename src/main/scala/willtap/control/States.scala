@@ -8,7 +8,7 @@ import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
 import lavamaze.{BlobGuard, Boulder, Dogbot, Maze, Mob, Snobot}
 import org.scalajs.dom.Event
 import org.scalajs.dom.{Element, Node}
-import willtap.Common
+import willtap.{Common, given}
 import willtap.imperativeTopic.PrefabCodable
 
 import scala.util.Random

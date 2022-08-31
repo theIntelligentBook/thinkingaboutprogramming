@@ -14,15 +14,21 @@ import com.wbillingsley.veautiful.doctacular.VideoPlayer
 
 import scala.collection.mutable
 import scala.scalajs.js
+import scala.scalajs.js.annotation._
+
+@js.native
+@JSGlobal("marked")
+object Marked extends js.Object:
+  def parse(s:String):String = js.native
+
+given marked:Markup = new Markup({ (s:String) => Marked.parse(s).asInstanceOf[String] })
 
 /**
   * Common UI components to all the views
   */
 object Common {
 
-  val markdownGenerator = new Markup({ (s:String) => js.Dynamic.global.marked.parse(s).asInstanceOf[String] })
-
-  def markdown(s:String):VHtmlNode = markdownGenerator.Fixed(s)
+  def markdown(s:String):VHtmlNode = marked.Fixed(s)
 
   /** Circuits Up! Logo */
   def symbol = {
