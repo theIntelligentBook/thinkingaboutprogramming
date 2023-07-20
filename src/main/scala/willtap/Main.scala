@@ -61,7 +61,7 @@ object Main {
         ),
         "Handling state" -> site.add("state",
           Alternative("Slide deck", Deck(() => States.deck)),
-          Alternative("Video", Video(() => YouTubeVideo("KE-XMyoAWggfik")))
+          Alternative("Video", Video(() => YouTubeVideo("XMyoAWggfik")))
         ),
         "Tutorial: Rescue Line" -> site.addChallenge("rescueLine", RescueLineTutorial.levels),
         "Sensors and Motors" -> site.add("sensorsAndMotors",
