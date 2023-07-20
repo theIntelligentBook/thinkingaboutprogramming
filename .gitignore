@@ -6,11 +6,13 @@ target/
 .idea/
 
 # VS Code, Metals, Bloop
-.metals/
-.bloop/
-.vscode/
 .bsp/
+.bloop/
+.metals/
+.vscode/
+
 project/metals.sbt
-project/project
+project/project/
 
-
+# Keep the deployed code out of Git in the main branch
+deployscripts/
