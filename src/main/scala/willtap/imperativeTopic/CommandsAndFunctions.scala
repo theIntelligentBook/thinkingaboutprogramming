@@ -3,8 +3,9 @@ package willtap.imperativeTopic
 import canvasland.{CanvasLand, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.{DiffNode, MutableArrayComponent}
-import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder, ScatterPlot}
+import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, ^}
+import com.wbillingsley.veautiful.doctacular.{Challenge, DeckBuilder}
+import com.wbillingsley.veautiful.templates.{ScatterPlot}
 import lavamaze.Maze
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node, html, svg}

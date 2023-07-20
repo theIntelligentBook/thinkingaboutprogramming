@@ -3,9 +3,9 @@ package willtap.control
 import canvasland.{CanvasLand, LineTurtle, MicroRat, RescueLine, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.DiffNode
-import com.wbillingsley.veautiful.html.{<, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.Challenge
-import com.wbillingsley.veautiful.templates.Challenge.{Complete, Level, Open}
+import com.wbillingsley.veautiful.html.{<, ^}
+import com.wbillingsley.veautiful.doctacular.Challenge
+import com.wbillingsley.veautiful.doctacular.Challenge.{Complete, Level, Open}
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node, html}
 import willtap.templates.{ExerciseStage, MarkdownStage, VNodeStage, YouTubeStage}
@@ -38,7 +38,7 @@ object MicroRatTutorial {
       }
     ))(tilesMode = false)
 
-    override protected def render: DiffNode[Element, Node] = Challenge.textColumn(
+    override protected def render = Challenge.textColumn(
       <.div(^.cls := "lead", ^.attr("style") := "height: 200px", Common.markdown(markdown)), codable
     )
   }

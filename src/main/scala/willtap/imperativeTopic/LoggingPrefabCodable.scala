@@ -2,12 +2,12 @@ package willtap.imperativeTopic
 
 import coderunner.{Codable, CodePlayControls, OnScreenHtmlConsole, WorkerCodeRunner}
 import com.wbillingsley.veautiful.DiffNode
-import com.wbillingsley.veautiful.html.{<, VHtmlComponent, ^}
+import com.wbillingsley.veautiful.html.{<, DHtmlComponent, ^}
 import org.scalajs.dom.{Element, Node}
 
 import scala.scalajs.js
 
-case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[String] = None, asyncify:Boolean = true) extends VHtmlComponent {
+case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[String] = None, asyncify:Boolean = true) extends DHtmlComponent {
 
   val console = new OnScreenHtmlConsole(100)
 
@@ -24,7 +24,7 @@ case class LoggingPrefabCodable(code:String, codable:Codable, codeStyle:Option[S
     reset = () => { console.clear(); codable.reset() },
   )
 
-  override protected def render: DiffNode[Element, Node] = <.div(^.cls := "jscodable",
+  override protected def render = <.div(^.cls := "jscodable",
     codable.vnode,
     console,
     <.pre(^.attr("style") ?= codeStyle, code),

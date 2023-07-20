@@ -17,7 +17,7 @@ case class DynamicPrefabCodable(name:String)(code: => String, codable:Codable, c
     reset = codable.reset _,
   )
 
-  override protected def render: DiffNode[Element, Node] = <.div(
+  override protected def render = <.div(
     codable.vnode,
     <.pre(^.attr("style") ?= codeStyle, code),
     codePlayControls

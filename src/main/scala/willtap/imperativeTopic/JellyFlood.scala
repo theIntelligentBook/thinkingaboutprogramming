@@ -1,12 +1,12 @@
 package willtap.imperativeTopic
 
 import com.wbillingsley.veautiful.{DiffComponent, DiffNode}
-import com.wbillingsley.veautiful.html.{<, VHtmlComponent, ^}
+import com.wbillingsley.veautiful.html.{<, DHtmlComponent, ^}
 import org.scalajs.dom.{Element, Node}
 
 import scala.collection.mutable
 
-case class JellyFlood(w:Int=8, h:Int=8, goalX:Int = 7, goalY:Int = 7, mazeString:Option[String] = None) extends VHtmlComponent {
+case class JellyFlood(w:Int=8, h:Int=8, goalX:Int = 7, goalY:Int = 7, mazeString:Option[String] = None) extends DHtmlComponent {
 
   val maze = mutable.Map.empty[(Int, Int), Boolean]
   val distance = mutable.Map.empty[(Int, Int), Int]
@@ -64,7 +64,7 @@ case class JellyFlood(w:Int=8, h:Int=8, goalX:Int = 7, goalY:Int = 7, mazeString
 
   reset()
 
-  override protected def render: DiffNode[Element, Node] = <.div(
+  override protected def render = <.div(
     <.div(^.cls := "jelly-grid",
       for {
         y <- 0 until h

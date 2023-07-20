@@ -3,12 +3,12 @@ package willtap.higherorder
 import canvasland.{CanvasLand, LineTurtle, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.html.{<, ^}
-import com.wbillingsley.veautiful.templates.DeckBuilder
+import com.wbillingsley.veautiful.doctacular.DeckBuilder
 import willtap.{Common, given}
 
 object HigherOrder {
 
-  val scilly = <.img(^.src := "images/control/scilly isles.jpg").create()
+  val scilly = <.img(^.src := "images/control/scilly isles.jpg").build().create()
 
   private val builder = new DeckBuilder()
     .markdownSlide(

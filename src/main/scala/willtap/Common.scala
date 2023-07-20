@@ -1,7 +1,7 @@
 package willtap
 
-import com.wbillingsley.veautiful.html.{<, Markup, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, VSlides, DefaultVSlidesPlayer}
+import com.wbillingsley.veautiful.html.{<, Markup, ^}
+import com.wbillingsley.veautiful.doctacular.{Challenge, VSlides, DefaultVSlidesPlayer}
 import willtap.async.AsyncProgramming
 import willtap.control.{MicroRatTutorial, OpenAndClosedLoop, RescueLineTutorial, SensorsAndMotors, States}
 import willtap.debugging.Debugging
@@ -28,14 +28,14 @@ given marked:Markup = new Markup({ (s:String) => Marked.parse(s).asInstanceOf[St
   */
 object Common {
 
-  def markdown(s:String):VHtmlNode = marked.Fixed(s)
+  def markdown(s:String) = marked.Fixed(s)
 
   /** Circuits Up! Logo */
   def symbol = {
     <.span()
   }
 
-  def downloadFromGitHub(project:String, user:String="UNEcosc250"):VHtmlNode = {
+  def downloadFromGitHub(project:String, user:String="UNEcosc250") = {
     <.a(
       ^.cls := "btn btn-secondary",
       ^.href := s"https://github.com/$user/$project/archive/master.zip",

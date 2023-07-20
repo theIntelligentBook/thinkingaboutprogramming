@@ -2,8 +2,8 @@ package willtap.templates
 
 import com.wbillingsley.veautiful.DiffNode
 import com.wbillingsley.veautiful.html.{<, ^}
-import com.wbillingsley.veautiful.templates.Challenge
-import com.wbillingsley.veautiful.templates.Challenge.Open
+import com.wbillingsley.veautiful.doctacular.Challenge
+import com.wbillingsley.veautiful.doctacular.Challenge.Open
 import org.scalajs.dom.{Element, Node}
 
 def echo360embed(videoId:String, size:(Int, Int)) = {
@@ -19,7 +19,7 @@ def echo360embed(videoId:String, size:(Int, Int)) = {
 
 case class Echo360Stage(videoId:String, size:(Int, Int) = (1600, 960), altLinks:Map[String, String] = Map.empty) extends Challenge.Stage  {
 
-  override protected def render: DiffNode[Element, Node] = {
+  override protected def render = {
     val (width, height) = size
 
     <.div(

@@ -6,7 +6,7 @@ import site._
 
 object Intro {
 
-  val frontPage = unique(<.div(
+  val frontPage = <.div(
     <.div(^.attr("style") := "position: relative; top: 0;",
       <.img(^.src := "images/tap720.jpg", ^.alt := "Thinking About Programming"),
       <.div(^.attr("style") := "position: absolute; bottom: 0px; right: 0px; background: rgba(255, 255, 255, 0.7);",
@@ -40,7 +40,7 @@ object Intro {
            |* [Commands and Functions](${router.path(DeckRoute("commandsAndFunctions", 0))})  \t
            |  ...in which we meet Snobot and learn a little JavaScript
            |
-           |* [Tutorial: Turtle Graphics](${router.path(ChallengeRoute("turtleGraphics", 0, 0))})  \t
+           |* [Tutorial: Turtle Graphics](${router.path(ListPathRoute("challenges", "turtleGraphics", Nil))})  \t
            |  ...in which we meet a turtle and draw some shapes
            |
            |## 2 & 3. Types
@@ -48,7 +48,7 @@ object Intro {
            |* [Types](${router.path(DeckRoute("types", 0))})  \t
            |  ...in which we consider what operations mean when applied to different things
            |
-           |* [Tutorial: Welcome to the Lava Maze](${router.path(ChallengeRoute("lavaMaze", 0, 0))})  \t
+           |* [Tutorial: Welcome to the Lava Maze](${router.path(ListPathRoute("challenges", "lavaMaze", Nil))})  \t
            |  ...in which we get Snobot through some simple mazes and complete assignment 1.
            |
            |* [Reference Types](${router.path(DeckRoute("objectTypes", 0))})  \t
@@ -56,13 +56,13 @@ object Intro {
            |
            |## 4 & 5. Robots and Control
            |
-           |* [Open and Closed Loop Control](${router.path(DeckRoute("closedLoop", 0))})  \t
+           |* [Open and Closed Loop Control](${router.path(ListPathRoute("challenges", "closedLoop", Nil))})  \t
            |  ...in which we start to move from dead reckoning to using feedback
            |
            |* [Handling state and state variables](${router.path(DeckRoute("states", 0))})  \t
            |  ...in which we land on the Moon
            |
-           |* [Tutorial: Rescue Line](${router.path(ChallengeRoute("rescueLine", 0, 0))})  \t
+           |* [Tutorial: Rescue Line](${router.path(ListPathRoute("challenges", "rescueLine", Nil))})  \t
            |  ...in which we get LineTurtle through some simple mazes and complete assignment 2.
            |
            |* [Sensors and Motors](${router.path(DeckRoute("sensorsAndMotors", 0))})  \t
@@ -78,7 +78,7 @@ object Intro {
            |* [Markup Languages](${router.path(DeckRoute("markupLanguages", 0))})  \t
            |  ...in which we consider
            |
-           |* [Tutorial: MicroRat](${router.path(ChallengeRoute("microRat", 0, 0))})  \t
+           |* [Tutorial: MicroRat](${router.path(ListPathRoute("challenges", "microRat", Nil))})  \t
            |  ...in which we get a ball-like robot through a physical maze and complete assignment 3.
            |
            |# 8. Nested Structures
@@ -101,6 +101,6 @@ object Intro {
       )
     ),
     Seq.empty
-  ))
+  )
 
 }

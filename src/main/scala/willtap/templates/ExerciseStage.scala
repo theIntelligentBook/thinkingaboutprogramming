@@ -1,7 +1,7 @@
 package willtap.templates
 
-import com.wbillingsley.veautiful.html.{<, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.Challenge.{Complete, Stage}
+import com.wbillingsley.veautiful.html.{<, ^}
+import com.wbillingsley.veautiful.doctacular.Challenge.{Complete, Stage}
 
 abstract class ExerciseStage() extends Stage {
 
