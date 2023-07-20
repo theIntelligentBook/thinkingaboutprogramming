@@ -6,7 +6,7 @@ import org.scalajs.dom.{Element, Node}
 
 case class KalturaStage(videoId:String, partnerId:String, size:(Int, Int) = (1600, 960)) extends VHtmlComponent {
 
-  override protected def render: DiffNode[Element, Node] = {
+  override protected def render = {
     val (width, height) = size
 
     <.iframe(

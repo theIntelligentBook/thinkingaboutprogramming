@@ -4,7 +4,7 @@ import canvasland.{CanvasLand, LineTurtle, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.DiffNode
 import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlDiffNode, ^, EventMethods}
-import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
+import com.wbillingsley.veautiful.doctacular.{Challenge, DeckBuilder}
 import com.wbillingsley.wren.Orientation.{East, North}
 import com.wbillingsley.wren.{Circuit, Component, Constraint, ConstraintPropagator, Ground, Junction, LogicInput, NMOSSwitch, Terminal, VoltageSource, Wire}
 import org.scalajs.dom
@@ -25,7 +25,7 @@ object SensorsAndMotors {
     private val low = 150
     private val high = 5
 
-    private val canvas = <.canvas(^.attr("width") := canvasWidth, ^.attr("height") := canvasHeight)
+    private val canvas = <.canvas(^.attr("width") := canvasWidth, ^.attr("height") := canvasHeight).build()
 
     private def paintCanvas() = for { c <- canvas.domNode } {
       val ctx = c.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
@@ -68,7 +68,7 @@ object SensorsAndMotors {
     }
 
 
-    override def render: DiffNode[Element, Node] = <.div(
+    override def render = <.div(
       <.div(canvas),
       <.input(^.attr("type") := "range", ^.attr("min") := 0, ^.attr("max") := 255, ^.prop("value") := input.toString,
         ^.on("input") ==> { e =>
@@ -115,7 +115,7 @@ object SensorsAndMotors {
     private def forward = (ta.potential - tb.potential).exists(_ > vt)
     private def backward = (tb.potential - ta.potential).exists(_ > vt)
 
-    override def render: VHtmlDiffNode = SVG.g(^.cls := "wren-component logic-probe", ^.attr("transform") := s"translate($x, $y)",
+    override def render = SVG.g(^.cls := "wren-component logic-probe", ^.attr("transform") := s"translate($x, $y)",
       SVG.rect(^.attr("x") := -(width/2), ^.attr("y") := "-20", ^.attr("width") := width, ^.attr("height") := 40),
       SVG.circle(^.attr("cx") := 0, ^.attr("cy") := 0, ^.attr("r") := (width/2) - 10),
       if (forward) forwardArrow else if (backward) backArrow else coast,
@@ -171,7 +171,7 @@ object SensorsAndMotors {
     val propagator = new ConstraintPropagator(circuit.components.flatMap(_.constraints))
     propagator.resolve()
 
-    override def render: DiffNode[Element, Node] = <.div(
+    override def render = <.div(
       <("style")(
         """.wren-canvas {
           |  font-size: 16px;

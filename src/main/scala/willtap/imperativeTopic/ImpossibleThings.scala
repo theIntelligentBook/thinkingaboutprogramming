@@ -1,8 +1,9 @@
 package willtap.imperativeTopic
 
 import com.wbillingsley.veautiful.{DiffNode, MutableArrayComponent}
-import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder, ScatterPlot}
+import com.wbillingsley.veautiful.html.{<, SVG, VHtmlComponent, ^}
+import com.wbillingsley.veautiful.doctacular.{Challenge, DeckBuilder}
+import com.wbillingsley.veautiful.templates.ScatterPlot
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node, html, svg}
 import willtap.{Common, given}
@@ -263,25 +264,25 @@ object ImpossibleThings {
       track && (p - centre).magnitude > boundaryRadius
     }
 
-    val particlePlot = new MutableArrayComponent[dom.Element, dom.Node, svg.Circle, (Vec2, Boolean)](
-      SVG.g(^.cls := "particles"), particles
-    )(
-      onEnter = { case ((_, track), i) =>
+    import MutableArrayComponent.* 
+    val particlePlot = SVG.g(
+      ^.cls := "particles"
+    ).generateChildren(particles)({ 
+      case ((_, track), i) =>
         if (i < 200) {
           SVG.circle(^.cls := "molecule tracked", ^.attr("r") := "3")
         } else {
           SVG.circle(^.cls := "molecule ordinary", ^.attr("r") := "3")
         }
-      },
-      onUpdate = { case ((p, _), _, v) =>
+    }).onUpdate({
+      case ((p, _), _, v) =>
         for { circle <- v.domNode } {
           circle.setAttribute("cx", p.x.toInt.toString)
           circle.setAttribute("cy", p.y.toInt.toString)
         }
-      }
-    )
+    })
 
-    def simControls():VHtmlNode = {
+    def simControls() = {
       import com.wbillingsley.veautiful.html.EventMethods
 
       <.div(^.cls := "form-row",
@@ -329,18 +330,18 @@ object ImpossibleThings {
       )
     }
 
-    def simFooter():VHtmlNode = {
+    def simFooter() = {
       <.p(s"Tick: $tick  Outside boundary: $outsideBoundary")
     }
 
     /** Graph the trials we've done so far */
-    def experimentGraph:VHtmlNode = ScatterPlot(
+    def experimentGraph = ScatterPlot(
       600, 300, "Heat", "Outside boundary",
       _.toString, _.toString, 30, 200
     ).plot(tableData.toSeq)
 
     /** Tabulate the trials we've done so far */
-    def experimentTable:VHtmlNode = <.div(^.cls := "results",
+    def experimentTable = <.div(^.cls := "results",
       <.table(^.cls := "table table-bordered results-table",
         <.tbody(
           <.tr(
@@ -359,7 +360,7 @@ object ImpossibleThings {
       )
     )
 
-    override protected def render: DiffNode[Element, Node] = {
+    override protected def render = {
 
       <.div(
         Challenge.split(

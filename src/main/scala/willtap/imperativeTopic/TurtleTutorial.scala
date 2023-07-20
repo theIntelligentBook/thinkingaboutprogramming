@@ -3,9 +3,9 @@ package willtap.imperativeTopic
 import canvasland.{CanvasLand, Turtle}
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.DiffNode
-import com.wbillingsley.veautiful.html.{<, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.Challenge
-import com.wbillingsley.veautiful.templates.Challenge.{Complete, Level, Open}
+import com.wbillingsley.veautiful.html.{<, ^}
+import com.wbillingsley.veautiful.doctacular.Challenge
+import com.wbillingsley.veautiful.doctacular.Challenge.{Complete, Level, Open}
 import org.scalajs.dom.{Element, Node}
 import willtap.templates.{ExerciseStage, MarkdownStage, VNodeStage}
 import willtap.{Common, site}
@@ -15,7 +15,7 @@ object TurtleTutorial {
   object DrawASquare extends ExerciseStage() {
     override def completion: Challenge.Completion = Complete(None, None)
 
-    override protected def render: DiffNode[Element, Node] = Challenge.textColumn(
+    override protected def render = Challenge.textColumn(
       <.div(^.cls := "lead",
         Common.markdown(
           """First of all, let's just draw a triangle. There are three sides to a triangle, so three times we're going to need to go `forward(100)`, then turn
@@ -48,7 +48,7 @@ object TurtleTutorial {
       }
     ))(tilesMode = false)
 
-    override protected def render: DiffNode[Element, Node] = Challenge.textColumn(
+    override protected def render = Challenge.textColumn(
       <.div(^.cls := "lead", ^.attr("style") := "height: 200px", Common.markdown(markdown)), codable
     )
   }

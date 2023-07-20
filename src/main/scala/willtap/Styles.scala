@@ -2,7 +2,6 @@ package willtap
 
 import com.wbillingsley.veautiful.html._
 import com.wbillingsley.veautiful.doctacular._
-import com.wbillingsley.veautiful.templates.VSlides
 
 given styleSuite:StyleSuite = StyleSuite()
 

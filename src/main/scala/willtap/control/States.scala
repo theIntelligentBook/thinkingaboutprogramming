@@ -3,8 +3,8 @@ package willtap.control
 import canvasland.{CanvasLand, LineTurtle, LunarLanderSim, Turtle}
 import coderunner.{JSCodable, LoggingPrefabCodable}
 import com.wbillingsley.veautiful.DiffNode
-import com.wbillingsley.veautiful.html.{<, VHtmlComponent, VHtmlNode, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
+import com.wbillingsley.veautiful.html.{<, DHtmlComponent, VHtmlContent, ^}
+import com.wbillingsley.veautiful.doctacular.{Challenge, DeckBuilder}
 import lavamaze.{BlobGuard, Boulder, Dogbot, Maze, Mob, Snobot}
 import org.scalajs.dom.Event
 import org.scalajs.dom.{Element, Node}
@@ -15,7 +15,7 @@ import scala.util.Random
 
 object States {
 
-  class ShowingState(title:VHtmlNode, cardFilter: Mob => Boolean) {
+  class ShowingState(title:VHtmlContent, cardFilter: Mob => Boolean) {
 
     val maze = Maze()((10, 5), (10, 5)) { maze =>
       maze.loadFromString(
@@ -91,8 +91,8 @@ object States {
         <.span()
     }
 
-    object StateItems extends VHtmlComponent {
-      override def render: DiffNode[Element, Node] = <.div(
+    object StateItems extends DHtmlComponent {
+      override def render = <.div(
         for { m <- maze.allMobs.filter(cardFilter) } yield stateCard(m)
       )
     }
@@ -173,7 +173,7 @@ object States {
     sim.Lander.angle = Random.nextDouble() * 2 * Math.PI
   })
 
-  object NearEnough1 extends VHtmlComponent {
+  object NearEnough1 extends DHtmlComponent {
 
     val sim = new LunarLanderSim("lander")(onReset = { sim =>
       sim.world.gravity.y = 0.16
@@ -186,25 +186,25 @@ object States {
     var dist:String = "100"
 
     def updateHover(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       hover = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateA(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       a = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateT(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       t = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateDist(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       dist = e.inputValue getOrElse ""
       rerender()
     }
@@ -259,7 +259,7 @@ object States {
   }
 
   /** Dynamic slide, in which we search for parameters knowing that d = a * Math.pow(t, 2) / 2 */
-  object NearEnough2 extends VHtmlComponent {
+  object NearEnough2 extends DHtmlComponent {
 
     val sim = new LunarLanderSim("lander")(onReset = { sim =>
       sim.world.gravity.y = 0.16
@@ -272,25 +272,25 @@ object States {
     var dist:String = "3960"
 
     def updatePower(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       power = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateA(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       a = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateB(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       b = e.inputValue getOrElse ""
       rerender()
     }
 
     def updateDist(e:Event):Unit = {
-      import com.wbillingsley.veautiful.html._
+      import com.wbillingsley.veautiful.html.EventMethods
       dist = e.inputValue getOrElse ""
       rerender()
     }

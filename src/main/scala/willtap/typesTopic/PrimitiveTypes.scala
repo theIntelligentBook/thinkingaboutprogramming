@@ -2,7 +2,7 @@ package willtap.typesTopic
 
 import coderunner.JSCodable
 import com.wbillingsley.veautiful.html.{<, ^}
-import com.wbillingsley.veautiful.templates.{Challenge, DeckBuilder}
+import com.wbillingsley.veautiful.doctacular.{Challenge, DeckBuilder}
 import lavamaze.Maze
 import willtap.{Common, given}
 

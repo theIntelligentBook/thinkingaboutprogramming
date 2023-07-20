@@ -1,6 +1,6 @@
 package willtap.markup
 
-import com.wbillingsley.veautiful.templates.DeckBuilder
+import com.wbillingsley.veautiful.doctacular.DeckBuilder
 import willtap.{Common, given}
 import willtap.control.OpenAndClosedLoop.builder
 
