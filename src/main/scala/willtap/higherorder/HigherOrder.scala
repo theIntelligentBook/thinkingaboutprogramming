@@ -105,9 +105,9 @@ object HigherOrder {
         |related. (e.g., all the paragraphs mentioning Mr McGregor)
         |
         |""".stripMargin)
-    .markdownSlide(
-      """## Let's just assume we have the text...
-        |
+    .veautifulSlide(<.div(
+      <.h2("Let's just assume we have the text..."),
+      <.div(Common.markdown("""
         |```js
         |let peterRabbit = `
         |Once upon a time there were four little Rabbits, and their names
@@ -297,7 +297,9 @@ object HigherOrder {
         |`
         |```
         |
-        |""".stripMargin)
+        |""".stripMargin))(^.style := "max-height: 800px; overflow-y: scroll; overflow-x: hidden;"),
+        <.p(<.i("(Peter Rabbit, by Beatrix Potter. From Project Gutenberg. Scroll to read.)"))
+        ))
     .markdownSlide(
       """## Getting the paragraphs
         |

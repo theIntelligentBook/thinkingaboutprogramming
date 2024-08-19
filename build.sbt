@@ -1,7 +1,7 @@
 enablePlugins(ScalaJSPlugin)
 
 name := "Thinking about Programming"
-scalaVersion := "3.1.1"
+scalaVersion := "3.3.1"
 
 // This is an application with a main method
 scalaJSUseMainModuleInitializer := true
